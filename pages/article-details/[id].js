@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import ReactMarkdown from 'markdown-to-jsx';
+import Head from 'next/head';
 
 const ArticleDetails = () => {
   const [article, setArticle] = useState(null);
@@ -25,7 +26,12 @@ const ArticleDetails = () => {
     }
   }, [id]);
   return (
-    
+    <>
+    <Head>
+        <title>Ord Post</title>
+        <meta property="twitter:card" content="https://pbs.twimg.com/profile_images/1693010455025840128/sYW3qBAt_400x400.jpg" />
+        <meta property="twitter:description" content="News on Bitcoin - Satoshi Vision"></meta>
+      </Head>
     <main className={`flex min-h-screen flex-col items-center justify-between p-24`}>
       {!article && 
         <div>Loading...</div>
@@ -44,6 +50,7 @@ const ArticleDetails = () => {
         </div>
       }
     </main>
+    </>
   );
 }
 

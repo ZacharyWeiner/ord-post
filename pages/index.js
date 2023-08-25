@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import Head from 'next/head'
 import { Inter } from 'next/font/google'
 import PublishControl from '@/components/Publish.component'
 import BalanceControl from '@/components/Balance.component'
@@ -10,6 +11,12 @@ const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
   return (
+    <>
+    <Head>
+        <title>Ord Post</title>
+        <meta property="twitter:card" content="https://pbs.twimg.com/profile_images/1693010455025840128/sYW3qBAt_400x400.jpg" />
+        <meta property="twitter:description" content="News on Bitcoin - Satoshi Vision"></meta>
+      </Head>
     <main
       className={`flex flex-col items-center justify-between lg:p-24 h-screen ${inter.className}`}
     >
@@ -111,5 +118,6 @@ export default function Home() {
         </a>
       </div>
     </main>
+    </>
   )
 }
