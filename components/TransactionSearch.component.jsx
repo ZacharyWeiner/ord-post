@@ -17,9 +17,9 @@ const TransactionSearchComponent = () => {
 
   return (
     <form onSubmit={handleSearch}>
-      <label htmlFor="txid">Transaction ID:</label>
-      <input type="text" name="txid" value={txid} onChange={handleInputChange} required />
-      <button type="submit">Search</button>
+      <label htmlFor="txid">TXID:</label>
+      <input type="text" name="txid" className="p-2 border border-gray-300 rounded-md focus:border-black focus:ring-0" value={txid} onChange={handleInputChange} required />
+      <button type="submit" className="bg-black text-white p-2 rounded-md hover:bg-gray-800 transition duration-200 ease-in-out">Search</button>
     </form>
   );
 };

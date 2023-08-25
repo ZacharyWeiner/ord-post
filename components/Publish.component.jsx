@@ -1,6 +1,7 @@
 // pages/index.js
 import { useState } from 'react';
 import ReactMarkdown from 'markdown-to-jsx';
+import BalanceControl from './Balance.component';
 
 export default function PublishControl() {
   const [formData, setFormData] = useState({ title: '', link: '', author: '', body: '', receiverAddress: '', signerKey: '' });
@@ -34,6 +35,7 @@ export default function PublishControl() {
 
   return (
     <div className="">
+    <div className='w-full flex items-justify-center p-2'> <div className="mx-auto flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30"> <BalanceControl /> </div></div>
       <form onSubmit={handleSubmit} className="space-y-6 bg-white p-8 rounded-xl shadow-md w-full mx-auto">
        <div className='md:flex md:space-x-4'> 
         <div className='w-full space-y-4'> 
@@ -69,11 +71,14 @@ export default function PublishControl() {
        
         <button type="submit" className="bg-black text-white p-2 rounded-md hover:bg-gray-800 transition duration-200 ease-in-out">Publish</button>
         {error && <div className="text-red-500">{error}</div>}
+        
       </form>
+     
       <div className='w-full flex items-justify-center'> 
-        <div className='mx-auto'> 
+        <div className='mx-auto border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30'> 
           <h1 className='text-2xl'> Preview</h1>
-          {formData['title'] && 
+          {!formData['title'] && "No Title"}
+          {
             <div className="container mx-auto">
               <h1 className="text-3xl font-bold">{formData['title']}</h1>
               <p><a href={formData['link']}>{formData['link']}</a></p>

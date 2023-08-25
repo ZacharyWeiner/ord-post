@@ -24,8 +24,8 @@ const BalanceControl = ({ address, network }) => {
       <div className="container mx-auto">
         {/* ... other controls ... */}
         <div>
-          <p className='font-black'>{balance ? `Balance: ${balance}` : 'Loading...'}</p>
-          <h3> Donate to 15zjLK5UVaAJKAJE2WGCNZqG1wTQga2dbS</h3>
+          <p className='font-black'>Balance: <span className='text-yellow-600'> {balance ? ` ${balance}` : 'Loading...'}</span></p>
+          <h3> Donate to <span className='text-green-800'>15zjLK5UVaAJKAJE2WGCNZqG1wTQga2dbS</span></h3>
         </div>
       </div>
     );

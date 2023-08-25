@@ -24,11 +24,11 @@ const RecentArticlesControl = () => {
 
   // Make sure to return the JSX
   return (
-    <div className=''>
+    <div className='w-full flex-grow'>
       <div className='w-full flex items-justify-center'>
         <h2 className="text-2xl font-bold mx-auto">Recent Articles</h2>
       </div>
-      <div className='w-full flex items-justify-center'>
+      <div className='w-full items-justify-center'>
 
           {recentArticles.map((article) => (
             <div key={article.id} className='p-4 mx-auto'>
