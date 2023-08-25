@@ -1,7 +1,7 @@
 export async function getUnspentTransactions(minimumSats, address) {
     let endpoint; 
     if(!address){
-       endpoint = 'https://api.whatsonchain.com/v1/bsv/main/address/16sFkvWP47rYzNmBywpwQM1B6W36s6CHeo/unspent';
+       endpoint = `https://api.whatsonchain.com/v1/bsv/main/address/${process.env.NEWS_CHANGE_ADDRESS}/unspent`;
     } else {
        endpoint = `https://api.whatsonchain.com/v1/bsv/main/address/${address}/unspent`;
     }

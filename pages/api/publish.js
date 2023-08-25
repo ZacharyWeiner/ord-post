@@ -87,13 +87,13 @@ const publishArticle = async (req, res) => {
     }
 
     // Validate the input
-    if (!title || !link || !author || body.length > 1000) {
+    if (!title ||  !author || body.length > 1000) {
       return res.status(400).json({ error: 'Invalid input' });
     }
     const jsonToSubmit = {
         "p": "news",
         "type": "post",
-        "app": "ord-press",
+        "app": "ord-post",
         "title": title,
         "url": link,
         "author":author,

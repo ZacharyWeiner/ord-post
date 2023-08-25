@@ -42,7 +42,7 @@ export default function PublishControl() {
             <input type="text" name="title" required onChange={handleChange} className="p-2 border border-gray-300 rounded-md focus:border-black focus:ring-0" />
           </div>
           <div className="flex flex-col">
-            <label htmlFor="link" className="text-lg font-semibold text-gray-700">Link:</label>
+            <label htmlFor="link" className="text-lg font-semibold text-gray-700">Link: (optional)</label>
             <input type="url" name="link" onChange={handleChange} className="p-2 border border-gray-300 rounded-md focus:border-black focus:ring-0" />
           </div>
           <div className="flex flex-col">
@@ -50,7 +50,7 @@ export default function PublishControl() {
             <input type="text" name="author" required onChange={handleChange} className="p-2 border border-gray-300 rounded-md focus:border-black focus:ring-0" />
           </div>
           <div className="flex flex-col">
-            <label htmlFor="receiverAddress" className="text-lg font-semibold text-gray-700">Reciever 1sat Address:</label>
+            <label htmlFor="receiverAddress" className="text-lg font-semibold text-gray-700">Reciever 1sat Address: (if you want to own this)</label>
             <input type="text" name="receiverAddress"  onChange={handleChange} className="p-2 border border-gray-300 rounded-md focus:border-black focus:ring-0" />
           </div>
           <div className="flex flex-col">
