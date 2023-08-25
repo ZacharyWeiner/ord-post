@@ -29,13 +29,10 @@ For the tech enthusiasts out there, if you wish to run this app on your own loca
 
     Clone the Repository
 
-    bash
 
 git clone [[repository-link]](https://github.com/ZacharyWeiner/ord-post)
 
 Install Dependencies
-
-bash
 
 npm install
 
