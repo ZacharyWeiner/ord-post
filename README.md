@@ -43,8 +43,6 @@ Set Up Firebase
 
 Run the App
 
-bash
-
     npm run dev
 
     🎉 Voila! OrdPost should be running on http://localhost:3000.
