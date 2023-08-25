@@ -2,6 +2,7 @@
 // pages/api/publish.js
 const admin = require('./../../utils/firebaseAdmin.js'); // Adjust the path as needed
 import { createOrdinal, sendOrdinal } from './../../ordinals/ordinals'
+// import { createOrdinal, sendOrdinal } from "js-1sat-ord";
 import { PrivateKey, P2PKHAddress } from 'bsv-wasm'
 import { getTransactionDetails, getUnspentTransactions, bitcoinToSatoshis } from './../../utils/transactions'
 
@@ -17,7 +18,7 @@ const handleInscribing = async (fileAsBase64, mimeType, receiverAddress, metadat
       let signKey = PrivateKey.from_wif(signerKey ? signerKey.toString() : process.env.NEWS_SIGN_KEY);
       const changeAddress =  process.env.NEWS_CHANGE_ADDRESS//process.env.HTML_ART_MINT_CHANGE_ADDRESS;
       let utxoResponse = await getUnspentTransactions(minimumSatoshis, changeAddress);
-      console.log({utxoResponse, metadata});
+      console.log("Signer Key", signKey);
       if(metadata?.subTypeData?.traits){
         console.log("Traits ", metadata.subTypeData.traits);
       }
@@ -82,7 +83,7 @@ const publishArticle = async (req, res) => {
     const { title, link, author, body, receiverAddress } = req.body;
     let { signerKey } = req.body;
     console.log(title, link, author, body, receiverAddress, signerKey);
-    if(signerKey.length < 30){
+    if(signerKey?.length < 30){
       signerKey = undefined;
     }
 

@@ -4,7 +4,7 @@ import ReactMarkdown from 'markdown-to-jsx';
 import BalanceControl from './Balance.component';
 
 export default function PublishControl() {
-  const [formData, setFormData] = useState({ title: '', link: '', author: '', body: '', receiverAddress: '', signerKey: '' });
+  const [formData, setFormData] = useState({ title: '', link: '', author: '', body: '', receiverAddress: ''}); //, signerKey: '' });
   const [error, setError] = useState(null);
 
   const handleChange = (e) => {
@@ -55,10 +55,12 @@ export default function PublishControl() {
             <label htmlFor="receiverAddress" className="text-lg font-semibold text-gray-700">Reciever 1sat Address: (if you want to own this)</label>
             <input type="text" name="receiverAddress"  onChange={handleChange} className="p-2 border border-gray-300 rounded-md focus:border-black focus:ring-0" />
           </div>
-          <div className="flex flex-col">
-            <label htmlFor="signerKey" className="text-lg font-semibold text-gray-700">Signer Key: (optional)</label>
-            <input type="text" name="signerKey"  onChange={handleChange} className="p-2 border border-gray-300 rounded-md focus:border-black focus:ring-0" />
-          </div>
+          {
+          // <div className="flex flex-col">
+          //   <label htmlFor="signerKey" className="text-lg font-semibold text-gray-700">Signer Key: (optional)</label>
+          //   <input type="text" name="signerKey"  onChange={handleChange} className="p-2 border border-gray-300 rounded-md focus:border-black focus:ring-0" />
+          // </div>
+        }
         </div>
         <div className='w-full flex'> 
           <div className="flex flex-col flex-grow">
