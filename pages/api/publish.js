@@ -75,7 +75,6 @@ const handleInscribing = async (fileAsBase64, mimeType, receiverAddress, metadat
 };
 
 const publishArticle = async (req, res) => {
-    console.log(0)
     if (req.method !== 'POST') {
       return res.status(405).end();
     }
@@ -101,7 +100,7 @@ const publishArticle = async (req, res) => {
         "body": body,
       }
     const base64Json = btoa(JSON.stringify(jsonToSubmit));
-    let sendTo = receiverAddress.lengh > 30 ? receiverAddress : process.env.NEWS_OWNER_ADDRESS;
+    let sendTo = receiverAddress.lengh > 30 ? receiverAddress : "1sM78adycEEiC1fhGS4YxExWTwyrNGQ85";
     console.log({receiverAddress, signerKey})
    
     try {
