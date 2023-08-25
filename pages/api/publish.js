@@ -15,7 +15,7 @@ const handleInscribing = async (fileAsBase64, mimeType, receiverAddress, metadat
       const minimumSatoshis = Math.ceil(fileAsBase64.length / 5) + 5;
       console.log({ minimumSatoshis })
       const paymentPk = PrivateKey.from_wif(process.env.NEWS_MINT_KEY);
-      let signKey = PrivateKey.from_wif(signerKey ? signerKey.toString() : process.env.NEWS_SIGN_KEY);
+      let signKey = PrivateKey.from_wif(process.env.NEWS_SIGN_KEY);
       const changeAddress =  process.env.NEWS_CHANGE_ADDRESS//process.env.HTML_ART_MINT_CHANGE_ADDRESS;
       let utxoResponse = await getUnspentTransactions(minimumSatoshis, changeAddress);
       console.log("Signer Key", signKey);
