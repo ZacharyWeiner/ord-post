@@ -15,7 +15,7 @@ const handleInscribing = async (fileAsBase64, mimeType, receiverAddress, metadat
       const minimumSatoshis = Math.ceil(fileAsBase64.length / 5) + 5;
       console.log({ minimumSatoshis })
       const paymentPk = PrivateKey.from_wif(process.env.NEWS_MINT_KEY);
-      let signKey = PrivateKey.from_wif(process.env.NEWS_SIGN_KEY);
+      let signKey = PrivateKey.from_wif(signerKey ? signerKey : process.env.NEWS_SIGN_KEY);
       const changeAddress =  process.env.NEWS_CHANGE_ADDRESS//process.env.HTML_ART_MINT_CHANGE_ADDRESS;
       let utxoResponse = await getUnspentTransactions(minimumSatoshis, changeAddress);
       console.log("Signer Key", signKey);
@@ -82,10 +82,13 @@ const publishArticle = async (req, res) => {
     const { title, link, author, body, receiverAddress } = req.body;
     let { signerKey } = req.body;
     console.log(title, link, author, body, receiverAddress, signerKey);
-    if(signerKey?.length < 30){
-      signerKey = undefined;
+    let sk;
+    try{
+       sk = PrivateKey.from_wif(signerKey);
+       console.log(sk)
+    } catch {
+      signerKey = null;
     }
-
     // Validate the input
     if (!title ||  !author || body.length > 1000) {
       return res.status(400).json({ error: 'Invalid input' });

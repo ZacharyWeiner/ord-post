@@ -37,7 +37,7 @@ export default function PublishControl() {
     <div className="">
     <div className='w-full flex items-justify-center p-2'> <div className="mx-auto flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30"> <BalanceControl /> </div></div>
       <form onSubmit={handleSubmit} className="space-y-6 bg-white p-8 rounded-xl shadow-md w-full mx-auto">
-       <div className='md:flex md:space-x-4'> 
+       <div className='md:flex md:space-x-4 text-gray-700'> 
         <div className='w-full space-y-4'> 
           <div className="flex flex-col">
             <label htmlFor="title" className="text-lg font-semibold text-gray-700">Title:</label>
@@ -55,12 +55,12 @@ export default function PublishControl() {
             <label htmlFor="receiverAddress" className="text-lg font-semibold text-gray-700">Reciever 1sat Address: (if you want to own this)</label>
             <input type="text" name="receiverAddress"  onChange={handleChange} className="p-2 border border-gray-300 rounded-md focus:border-black focus:ring-0" />
           </div>
-          {
-          // <div className="flex flex-col">
-          //   <label htmlFor="signerKey" className="text-lg font-semibold text-gray-700">Signer Key: (optional)</label>
-          //   <input type="text" name="signerKey"  onChange={handleChange} className="p-2 border border-gray-300 rounded-md focus:border-black focus:ring-0" />
-          // </div>
-        }
+          
+          <div className="flex flex-col">
+            <label htmlFor="signerKey" className="text-lg font-semibold text-gray-700">Signer Key: (optional)</label>
+            <input type="text" name="signerKey"  onChange={handleChange} className="p-2 border border-gray-300 rounded-md focus:border-black focus:ring-0" />
+          </div>
+        
         </div>
         <div className='w-full flex'> 
           <div className="flex flex-col flex-grow">
