@@ -103,8 +103,8 @@ const publishArticle = async (req, res) => {
         "body": body,
       }
     const base64Json = btoa(JSON.stringify(jsonToSubmit));
-    let sendTo = receiverAddress.lengh > 30 ? receiverAddress : "1sM78adycEEiC1fhGS4YxExWTwyrNGQ85";
-    console.log({receiverAddress, signerKey})
+    let sendTo = receiverAddress.length > 30 ? receiverAddress : "1sM78adycEEiC1fhGS4YxExWTwyrNGQ85";
+    console.log({sendTo, signerKey})
    
     try {
       const completion = await handleInscribing( 
