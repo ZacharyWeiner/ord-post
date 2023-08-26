@@ -12,8 +12,8 @@ const inter = Inter({ subsets: ['latin'] })
 export default function Home() {
   return (
     <>
-    <Head>
-        <title>Ord Post</title>
+      <Head>
+        <title>ordpost</title>
         <meta property="twitter:card" content="https://pbs.twimg.com/profile_images/1693010455025840128/sYW3qBAt_400x400.jpg" />
         <meta property="twitter:description" content="News on Bitcoin - Satoshi Vision"></meta>
       </Head>
@@ -32,22 +32,30 @@ export default function Home() {
           </div> 
         </div>
       </div>
-      <div className='w-full flex pt-24'>
-        <h1 className="text-4xl mx-auto font-bold">Welcome to Ord.Post</h1>
+      <div className='w-full flex pt-24 mb-12'>
+        <h1 className="text-4xl mx-auto font-bold">Welcome to Ordpost</h1>
       </div> 
-      <TransactionSearchComponent />
-      <div className='w-full flex text-center '>
-        <Link
-            href="/new-post"
-            className="w-full bg-white text-blue-500 p-2 px-10 mx-10 my-4 rounded-md hover:bg-gray-800 transition duration-200 ease-in-out shadow-lg"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {' '} Create A Post{' '}
-          </Link>
+      
+      <div className='md:flex w-full'> 
+        <div className='w-full lg:max-w-md'>
+         
+          <div className='w-full flex text-center '>
+            <Link
+                href="/new-post"
+                className="w-full bg-white text-blue-500 p-2 px-10 mx-10 my-4 rounded-md hover:bg-gray-800 transition duration-200 ease-in-out shadow-lg"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {' '} CREATE A NEW POST {' '}
+              </Link>
+          </div>
+          <p className="w-full text-4xl mx-auto font-bold p-2 px-10 mx-10 my-4" > OR Search By TXID: </p>
+          <TransactionSearchComponent />
+          
+        </div> 
+        <div className='mx-auto flex min-h-48 overflow-y-scroll w-full  border-b border-gray-300 bg-gradient-to-b from-zinc-200 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30'>
+          <RecentArticlesControl />
         </div>
-      <div className='flex min-h-48 overflow-y-scroll w-full mt-12 border-b border-gray-300 bg-gradient-to-b from-zinc-200 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30'>
-        <RecentArticlesControl />
       </div>
       <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
       <Link
