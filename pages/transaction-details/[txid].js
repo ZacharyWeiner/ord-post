@@ -31,7 +31,7 @@ const TransactionDetails = () => {
             <ReactMarkdown>{details.body ? details.body : ""}</ReactMarkdown>
             </pre>
           </div>
-          <p>{txid}</p> 
+          <p><a target="_blank" href={`https://www.whatsonchain.com/tx/${txid.split('_')[0]}`}>View on chain</a></p> 
         </div>
       }
     </main>
