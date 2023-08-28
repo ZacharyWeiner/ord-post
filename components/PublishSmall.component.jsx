@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import ReactMarkdown from 'markdown-to-jsx';
 import BalanceControl from './Balance.component';
+import Link from 'next/link';
 
 export default function PublishSmall() {
   const [formData, setFormData] = useState({ title: '', link: '', author: '', body: '', receiverAddress: ''}); //, signerKey: '' });
@@ -61,6 +62,7 @@ export default function PublishSmall() {
         <button type="submit" className="bg-black text-white p-2 rounded-md hover:bg-gray-800 transition duration-200 ease-in-out">Publish</button>
         {error && <div className="text-red-500">{error}</div>}
       </form>
+      <Link href="/new" className='p-8' > include more details -&gt; </Link>
     </div>
   );
 }
