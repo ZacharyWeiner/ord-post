@@ -21,7 +21,7 @@ export default function Home() {
      
       <TransactionSearchComponent />
         <section className="md:flex w-full">
-        <article className="mx-auto flex min-h-48 overflow-y-scroll w-full border-b border-gray-300 bg-gradient-to-b from-zinc-200 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
+        <article className="mx-auto flex w-full border-b border-gray-300 bg-gradient-to-b from-zinc-200 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
             <RecentArticlesControl />
           </article>
           <aside className="w-full lg:max-w-md">

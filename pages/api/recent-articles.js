@@ -8,7 +8,7 @@ export default async (req, res) => {
 
   try {
     const articlesRef = admin.firestore().collection('articles');
-    const snapshot = await articlesRef.orderBy('publishedAt', 'desc').limit(5).get();
+    const snapshot = await articlesRef.orderBy('publishedAt', 'desc').limit(10).get();
 
     const articles = snapshot.docs.map((doc) => ({
       id: doc.id,
