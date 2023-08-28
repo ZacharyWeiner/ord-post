@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { useState, useEffect } from 'react';
 
 const Articles = () => {
@@ -34,6 +35,7 @@ const Articles = () => {
                     <p className="text-gray-800 overflow-ellipsis overflow-hidden h-20">
                         {article.body}
                     </p>
+                    <div> <Link href={`/article-details/${article.id}`}> View </Link> </div>
                 </div>
             ))}
         </div>

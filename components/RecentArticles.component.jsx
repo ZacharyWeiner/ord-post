@@ -32,9 +32,11 @@ const RecentArticlesControl = () => {
 
           {recentArticles.map((article) => (
             <div key={article.id} className='p-4 mx-auto'>
-               <Link className='text-lg font-bold' href={`/article-details/${article.id}`}>{article.title}</Link>
-               <div>By: {article.author}</div> 
-               <Link className='' href={`/article-details/${article.id}`}>view</Link>
+               <Link className='text-lg font-bold' href={`/article-details/${article.id}`}>
+                  {article.title && <div className='text-sm' >{article.title}</div> }
+                  <div className='text-sm' >{article.body}</div> 
+                  <div>By: {article.author}</div> 
+               </Link>
             </div>
           ))}
       </div>

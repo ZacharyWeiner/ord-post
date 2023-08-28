@@ -32,7 +32,7 @@ const ArticleDetails = () => {
         <meta property="twitter:card" content="https://pbs.twimg.com/profile_images/1693010455025840128/sYW3qBAt_400x400.jpg" />
         <meta property="twitter:description" content="News on Bitcoin - Satoshi Vision"></meta>
       </Head>
-    <main className={`flex min-h-screen flex-col items-center justify-between p-24`}>
+    <main className={`p-6 flex min-h-screen flex-col items-center justify-between lg:p-24`}>
       {!article && 
         <div>Loading...</div>
       }

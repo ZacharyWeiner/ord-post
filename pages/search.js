@@ -39,13 +39,12 @@ export default function Search() {
     <div className="container mx-auto p-6">
       <h1 className="text-4xl font-bold mb-4">Search Inscriptions By Author</h1>
       <div className="mb-6">
-      {query}
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search..."
-          className="border p-2 rounded-md w-full"
+          className="border p-2 rounded-md w-full text-gray-700"
         />
         <button onClick={handleSearch} className="bg-blue-600 text-white px-4 py-2 rounded mt-2">Search</button>
       </div>

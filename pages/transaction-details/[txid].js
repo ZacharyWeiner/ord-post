@@ -17,7 +17,7 @@ const TransactionDetails = () => {
   }, [txid]);
 
   return (
-    <main className={`flex min-h-screen flex-col items-center justify-between p-24`}>
+    <main className={`p-6 flex min-h-screen flex-col items-center justify-between lg:p-24`}>
       {!details && 
         <div>Loading...</div>
       }

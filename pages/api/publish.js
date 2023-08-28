@@ -90,7 +90,7 @@ const publishArticle = async (req, res) => {
       signerKey = null;
     }
     // Validate the input
-    if (!title ||  !author || body.length > 1000) {
+    if (body.length > 1000) {
       return res.status(400).json({ error: 'Invalid input' });
     }
     const jsonToSubmit = {
