@@ -48,7 +48,7 @@ function ProfilePage() {
   
     const a = document.createElement("a");
     a.href = url;
-    a.download = "keys.json";
+    a.download = "ordpost-keys.json";
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
