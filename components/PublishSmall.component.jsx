@@ -1,10 +1,22 @@
 // pages/index.js
 import { useState } from 'react';
+import { usePrivateKeys } from '@/hooks/usePrivateKeys';
 import ReactMarkdown from 'markdown-to-jsx';
 import BalanceControl from './Balance.component';
 import Link from 'next/link';
 
 export default function PublishSmall() {
+  const {
+    payPrivKey,
+    payAddress,
+    objPrivKey,
+    objAddress,
+    generateNewPayKey,
+    generateNewObjKey,
+    setCustomPayKey,
+    setCustomObjKey
+  } = usePrivateKeys();
+
   const [formData, setFormData] = useState({ title: '', link: '', author: '', body: '', receiverAddress: ''}); //, signerKey: '' });
   const [error, setError] = useState(null);
 
@@ -17,7 +29,9 @@ export default function PublishSmall() {
     e.preventDefault();
     console.log("publishing");
     // Post the data to the /api/publish endpoint
-    const res = await fetch('/api/publish', {
+    formData['signerKey'] = objPrivKey;
+    formData['receiverAddress'] = objAddress;
+    const res = await fetch('/api/publish-new', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData),
@@ -44,18 +58,6 @@ export default function PublishSmall() {
                 <label htmlFor="body" className="text-sm font-semibold text-gray-700 flex-grow">Post (markdown):</label>
                 <textarea rows={10} name="body" maxLength="1000" required onChange={handleChange} className="h-full p-2 border border-gray-300 rounded-md h-32 focus:border-black focus:ring-0"></textarea>
             </div>
-        
-        
-            <div className="flex flex-col">
-                <label htmlFor="receiverAddress" className="text-sm font-semibold text-gray-700">Reciever 1sat Address: (if you want to own this)</label>
-                <input type="text" name="receiverAddress"  onChange={handleChange} className="p-2 border border-gray-300 rounded-md focus:border-black focus:ring-0" />
-            </div>
-            
-            <div className="flex flex-col">
-                <label htmlFor="signerKey" className="text-sm font-semibold text-gray-700">Signer Key: (optional)</label>
-                <input type="text" name="signerKey"  onChange={handleChange} className="p-2 border border-gray-300 rounded-md focus:border-black focus:ring-0" />
-            </div>
-            
             </div>
         
         

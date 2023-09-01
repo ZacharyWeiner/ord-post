@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
+import { usePrivateKeys } from '@/hooks/usePrivateKeys'
 import PublishControl from '@/components/Publish.component'
 import BalanceControl from '@/components/Balance.component'
 import RecentArticlesControl from '@/components/RecentArticles.component'
@@ -8,6 +9,7 @@ import Link from 'next/link'
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+  const { payPrivKey, objPrivKey } = usePrivateKeys();
   return (
     <main
       className={`flex min-h-screen flex-col items-center justify-between ${inter.className}`}

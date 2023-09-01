@@ -46,7 +46,7 @@ const ArticleDetails = () => {
               <ReactMarkdown>{article.body}</ReactMarkdown>
             </pre>
           </div>
-          <p className='pt-4'><a target='_blank' noopen noref href={`https://www.whatsonchain.com/tx/${article.txid}`}>view tx: {article.txid}</a></p> 
+          <p className='pt-4'><a target='_blank' noopen='true' noref='true' href={`https://www.whatsonchain.com/tx/${article.txid}`}>view tx: {article.txid}</a></p> 
         </div>
       }
     </main>

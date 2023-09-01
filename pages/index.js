@@ -1,7 +1,10 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import Script from 'next/script'
 import Head from 'next/head'
 import { Inter } from 'next/font/google'
+import { useEffect, useState } from 'react'
+import { usePrivateKeys } from '@/hooks/usePrivateKeys'
 import PublishControl from '@/components/Publish.component'
 import BalanceControl from '@/components/Balance.component'
 import RecentArticlesControl from '@/components/RecentArticles.component'
@@ -9,16 +12,19 @@ import TransactionSearchComponent from '@/components/TransactionSearch.component
 import PublishSmall from "@/components/PublishSmall.component";
 const inter = Inter({ subsets: ['latin'] });
 
-export default function Home() {
+export default function Home() { 
+  const { payPrivKey, objPrivKey } = usePrivateKeys();
   return (
     <>
       <Head>
-        <title>ordpost</title>
+        <title>OrdPost | Blogs on the Blockchain</title>
         <meta property="twitter:card" content="https://pbs.twimg.com/profile_images/1693010455025840128/sYW3qBAt_400x400.jpg" />
-        <meta property="twitter:description" content="News on Bitcoin - Satoshi Vision"></meta>
+        <meta property="twitter:description" content="Post on Bitcoin Ordinals"></meta>
       </Head>
       <main className={`flex flex-col items-center justify-between lg:p-24 h-screen ${inter.className}`}>
-     
+      {payPrivKey}
+      <br />
+      {objPrivKey}
       <TransactionSearchComponent />
         <section className="md:flex w-full">
         <article className="mx-auto flex w-full border-b border-gray-300 bg-gradient-to-b from-zinc-200 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
@@ -57,6 +63,7 @@ export default function Home() {
             <p className="m-0 max-w-[30ch] text-sm opacity-50">Clone this project to run on your own</p>
           </a>
         </section>
+        
       </main>
     </>
   );
