@@ -35,7 +35,7 @@ const RecentArticlesControl = () => {
                <Link className='text-lg font-bold' href={`/article-details/${article.id}`}>
                   {article.title && <div className='text-sm' >{article.title}</div> }
                   <div className='text-sm' >{article.body}</div> 
-                  <div className='text-sm'>By: {article.author}</div> 
+                  <div className='text-xs'>By: {article.author}</div> 
                </Link>
             </div>
           ))}

@@ -25,3 +25,7 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+.title{
+  font-family: UnifrakturCook, serif;
+}

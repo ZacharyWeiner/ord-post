@@ -22,9 +22,7 @@ export default function Home() {
         <meta property="twitter:description" content="Post on Bitcoin Ordinals"></meta>
       </Head>
       <main className={`flex flex-col items-center justify-between lg:p-24 h-screen ${inter.className}`}>
-      {payPrivKey}
-      <br />
-      {objPrivKey}
+      <h1 className='title text-7xl'> OrdPost </h1>
       <TransactionSearchComponent />
         <section className="md:flex w-full">
         <article className="mx-auto flex w-full border-b border-gray-300 bg-gradient-to-b from-zinc-200 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
