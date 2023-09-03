@@ -56,6 +56,7 @@ const ArticleDetails = () => {
               <p className="text-gray-600 mb-2 title text-sm">
                 Author: <span className="">{article.author}</span>
               </p>
+              <p><a target="_blank" href={`https://www.whatsonchain.com/tx/${article.txid.split('_')[0]}`}>View on chain</a></p> 
             </div>
           }
         </div>
