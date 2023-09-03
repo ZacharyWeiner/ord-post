@@ -3,11 +3,13 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
-
+import ReactMarkdown from 'markdown-to-jsx';
+import OrbinalEncoder from '@/components/orbinals/forTxid';
 const ArticleDetails = () => {
   const [article, setArticle] = useState(null);
   const router = useRouter();
   const { id } = router.query; // Get the article ID from the URL query
+
 
   useEffect(() => {
     if (id) {
@@ -47,22 +49,32 @@ const ArticleDetails = () => {
                   {article.title}
                 </h2>
               </Link>
-              <a href={article.link} className="text-blue-600 hover:underline mb-2 block">
+              <a href={article.link} className="text-blue-600 hover:underline mb-2 block transition-colors">
                 {article.link}
               </a>
-              <p className="text-gray-800 ">
-                {article.body}
+              <p className="transition-colors">
+              <pre><ReactMarkdown>{article.body}</ReactMarkdown></pre>
               </p>
-              <p className="text-gray-600 mb-2 title text-sm">
+              <p className="transition-colors mb-2 title text-sm">
                 Author: <span className="">{article.author}</span>
               </p>
               <p><a target="_blank" href={`https://www.whatsonchain.com/tx/${article.txid.split('_')[0]}`}>View on chain</a></p> 
             </div>
+            
+
           }
+          <div className=''>
+            {
+              // {article && 
+              //   <OrbinalEncoder initialTxid={article.txid} />
+              // }
+            }
+          </div>
         </div>
+        <div> 
+      </div>
       </div>
     </>
   );
 }
-
 export default ArticleDetails;

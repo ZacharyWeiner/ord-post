@@ -39,7 +39,7 @@ export default function PublishControl() {
 
     if (res.status === 200) {
       // Redirect to the article details page
-      window.location.href = `/article-details/${data.id}`;
+      window.location.href = `/articles/${data.id}`;
     } else {
       // Show an error message
       setError(data.error);

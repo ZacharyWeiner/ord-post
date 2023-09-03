@@ -44,7 +44,7 @@ export default async function upload(req, res) {
 
       let combined = '';
       let converted = 2.18; // Initial value
-      let endAngle = 0;
+      let endAngle = -2.18;
 
       for (let i = 0; i < 11; i++) {
         const x = width / 2;
