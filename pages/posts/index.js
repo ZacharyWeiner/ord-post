@@ -18,24 +18,26 @@ const Articles = () => {
   }, [page]);
 
   return (
-    <div className="container mx-auto p-6">
-        <h1 className="text-4xl font-bold mb-4">Articles</h1>
+    <div className="container mx-auto p-6 overflow-y-scroll max-h-screen">
+        <h1 className="title text-4xl font-bold mb-4 ">Posts</h1>
         <div className="grid grid-cols-1 gap-4">
             {articles.map((article) => (
-                <div key={article.id} className="border p-4 rounded-md shadow-sm hover:shadow-md transition-shadow">
-                    <h2 className="text-2xl font-semibold mb-2">
+                <div key={article.id} className="border p-4 rounded-md shadow-xl hover:shadow-md transition-shadow">
+                <Link href={`/articles/${article.id}`}>
+                    <h2 className="text-2xl font-semibold mb-2 title">
                         {article.title}
                     </h2>
-                    <p className="text-gray-600 mb-2">
-                        Author: <span className="font-medium">{article.author}</span>
-                    </p>
+                    
                     <a href={article.link} className="text-blue-600 hover:underline mb-2 block">
                         {article.link}
                     </a>
                     <p className="text-gray-800 overflow-ellipsis overflow-hidden h-20">
                         {article.body}
                     </p>
-                    <div> <Link href={`/article-details/${article.id}`}> View </Link> </div>
+                    <p className="text-gray-600 mb-2 title text-sm">
+                        Author: <span className="">{article.author}</span>
+                    </p>
+                    </Link>
                 </div>
             ))}
         </div>

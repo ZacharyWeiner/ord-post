@@ -40,26 +40,30 @@ const TransactionDetails = () => {
   }, [txid]);
 
   return (
-    <main className={`p-6 flex min-h-screen flex-col items-center justify-between lg:p-24`}>
-      {(!details && !content) &&
-        <div>Loading...</div>
-      }
-      { content && 
-        <div className="container mx-auto">
-          {details && details['title'] && 
-            <h1 className="text-4xl font-bold">{details['title']}</h1>
-          }
-          <p><a href={''}>{''}</a></p>
-          <p>By: {signedBy}</p>
-          <div>
-            <pre>
-            <ReactMarkdown>{content}</ReactMarkdown>
-            </pre>
+    // Wrap the existing container in a flexbox layout
+    <div className="flex flex-col min-h-screen">
+      <div className="flex-grow container mx-auto p-6 overflow-y-scroll">
+        {(!details && !content) &&
+          <div>Loading...</div>
+        }
+        { content && 
+          <div className='shadow-xl hover:shadow-md transition-shadow p-6 rounded'>
+            {details && details['title'] && 
+              <h1 className="text-4xl font-bold p-2 title">{details['title']}</h1>
+            }
+            <p><a href={''}>{''}</a></p>
+            
+            <div className='py-2'>
+              <pre>
+                <ReactMarkdown>{content}</ReactMarkdown>
+              </pre>
+            </div>
+            <p className='title text-sm'>By: {signedBy}</p>
+            <p><a target="_blank" href={`https://www.whatsonchain.com/tx/${txid.split('_')[0]}`}>View on chain</a></p> 
           </div>
-          <p><a target="_blank" href={`https://www.whatsonchain.com/tx/${txid.split('_')[0]}`}>View on chain</a></p> 
-        </div>
-      }
-    </main>
+        }
+      </div>
+    </div>
   );
 };
 

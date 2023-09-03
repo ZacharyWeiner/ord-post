@@ -36,8 +36,8 @@ export default function Search() {
   };
 
   return (
-    <div className="container mx-auto p-6">
-      <h1 className="text-4xl font-bold mb-4">Search Inscriptions By Author</h1>
+    <div className="container mx-auto p-6 min-h-screen">
+      <h1 className="text-4xl font-bold mb-4 title">Search Inscriptions By Author</h1>
       <div className="mb-6">
         <input
           type="text"

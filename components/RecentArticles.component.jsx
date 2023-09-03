@@ -26,13 +26,13 @@ const RecentArticlesControl = () => {
   return (
     <div className='w-full'>
       <div className='w-full flex items-justify-center'>
-        <h2 className="text-2xl font-bold mx-auto">Recent Articles</h2>
+        <h2 className="text-2xl font-bold mx-auto title">Recent Articles</h2>
       </div>
       <div className='w-full items-justify-center overflow-y-scroll'>
 
           {recentArticles.map((article) => (
             <div key={article.id} className='p-4 mx-auto'>
-               <Link className='text-lg font-bold' href={`/article-details/${article.id}`}>
+               <Link className='text-lg font-bold' href={`/articles/${article.id}`}>
                   {article.title && <div className='text-sm' >{article.title}</div> }
                   <div className='text-sm' >{article.body}</div> 
                   <div className='text-xs'>By: {article.author}</div> 
