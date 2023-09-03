@@ -34,7 +34,7 @@ export default async function upload(req, res) {
     const buffer = Buffer.from(file, 'base64');
     try {
      
-      const loadedImage = await loadImage('./uploads/2.png');
+      const loadedImage = await loadImage(buffer);
       const width = 550;
       const height = 550;
       const canvas = createCanvas(width, height);

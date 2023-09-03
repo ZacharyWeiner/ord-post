@@ -20,6 +20,7 @@ function OrbinalEncoder() {
       <div>
         <h2>Encode a Txid</h2>
         <input 
+          className='text-gray-700'
           type="text" 
           value={txid} 
           onChange={(e) => setTxid(e.target.value)} 

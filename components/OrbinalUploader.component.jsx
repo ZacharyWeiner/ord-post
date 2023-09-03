@@ -23,9 +23,11 @@ function OrbinalUploader() {
       },
     });
 
-    const [image, setImage] = useState(null);
+  const [image, setImage] = useState(null);
   const [base64Image, setBase64Image] = useState("");
   const [mimeType, setMimeType] = useState("");
+  const [decodedMessage, setDecodedMessage] = useState("")
+  const [decodedTxid, setDecodedTxid] = useState("")
 
   const handleImageChange = (e) => {
     setImage(e.target.files[0]);
@@ -51,6 +53,8 @@ function OrbinalUploader() {
       });
       const data = await response.json();
       console.log({data})
+      setDecodedMessage(data.message)
+      setDecodedTxid(data.decodedTxid)
     };
     reader.readAsDataURL(image);
   };
@@ -69,6 +73,10 @@ function OrbinalUploader() {
           />
         </div>
         <button> Submit</button>
+        <br /> 
+        {decodedMessage}
+        <br />
+        {decodedTxid}
        </form>
       </div>
     );
