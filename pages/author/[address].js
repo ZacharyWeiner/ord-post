@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
+import ReactMarkdown from 'markdown-to-jsx';
 import Link from 'next/link';
 
 const AddressDetails = () => {
@@ -17,7 +18,7 @@ const AddressDetails = () => {
                 const data = await res.json();
                 const transactionsWithContent = await Promise.all(
                     data.map(async (tx) => {
-                        const contentRes = await fetch(`https://ordinals.gorillapool.io/api/files/inscriptions/${tx.txid}`);
+                        const contentRes = await fetch(`https://ordinals.gorillapool.io/api/files/inscriptions/${tx.txid}_0`);
                         const content = await contentRes.text();
                         return { ...tx, content };
                     })
@@ -40,10 +41,12 @@ const AddressDetails = () => {
                   <h2 className="text-2xl font-semibold mb-2 title">
                       {tx.MAP ? tx.MAP.title : 'No Title'}
                   </h2>
-                  </Link>
-                  <p className="text-gray-600 mb-2 title text-sm">
-                      Signed By: <span className="">{tx.SIGMA ? tx.SIGMA[0].address : 'Unknown'}</span>
+                  <ReactMarkdown>{tx.content? tx.content : ""}</ReactMarkdown>
+                  <p className="mb-2 text-sm">
+                      author: <span className="">{tx.SIGMA ? tx.SIGMA[0].address : 'Unknown'}</span>
                   </p>
+                  
+                </Link>
               </div>
           ))}
       </div>
