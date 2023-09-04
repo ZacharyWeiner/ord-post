@@ -35,7 +35,7 @@ const Articles = () => {
                         {article.body}
                     </p>
                     <p className="mb-2 text-sm">
-                        <Link href={`/blog/${article.author}`}><span className="">{article.author}</span> </Link>
+                        <Link href={`/author/${article.author}`}><span className="">{article.author}</span> </Link>
                     </p>
                     </Link>
                 </div>

@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import ReactMarkdown from 'markdown-to-jsx';
 import OrbinalEncoder from '@/components/orbinals/forTxid';
+import CommentForm from '@/components/CommentForm.component';
+import CommentList from '@/components/comments/CommentList.component';
 
 const TransactionDetails = () => {
   const router = useRouter();
@@ -70,6 +72,12 @@ const TransactionDetails = () => {
               </div>
             </div>
           }
+        </div>
+        <div> 
+          <CommentForm txid={txid} />
+        </div>
+        <div> 
+          <CommentList txid={txid} />
         </div>
       </div>
     </div>

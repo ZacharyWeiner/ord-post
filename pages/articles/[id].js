@@ -5,6 +5,8 @@ import Head from 'next/head';
 import Link from 'next/link';
 import ReactMarkdown from 'markdown-to-jsx';
 import OrbitalEncoder from '@/components/orbinals/forTxid'; // Update import as per your project structure
+import CommentForm from '@/components/CommentForm.component';
+import CommentList from '@/components/comments/CommentList.component';
 
 const ArticleDetails = () => {
   const [article, setArticle] = useState(null);
@@ -70,6 +72,12 @@ const ArticleDetails = () => {
               </div>
             }
           </div>
+          <div> 
+          <CommentForm txid={article ? article.txid : ""} />
+        </div>
+        <div> 
+          <CommentList txid={article ? article.txid : ""} />
+        </div>
         </div>
       </div>
     </>
