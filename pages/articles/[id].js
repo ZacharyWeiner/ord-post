@@ -4,18 +4,17 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
 import ReactMarkdown from 'markdown-to-jsx';
-import OrbinalEncoder from '@/components/orbinals/forTxid';
+import OrbitalEncoder from '@/components/orbinals/forTxid'; // Update import as per your project structure
+
 const ArticleDetails = () => {
   const [article, setArticle] = useState(null);
   const router = useRouter();
-  const { id } = router.query; // Get the article ID from the URL query
-
+  const { id } = router.query;
 
   useEffect(() => {
     if (id) {
       const fetchArticle = async () => {
         const res = await fetch(`/api/article?id=${id}`);
-
         if (res.ok) {
           const articleData = await res.json();
           setArticle(articleData);
@@ -36,14 +35,13 @@ const ArticleDetails = () => {
         <meta property="twitter:description" content="News on Bitcoin - Satoshi Vision"></meta>
       </Head>
 
-      {/* Wrap the existing container in a flexbox layout */}
       <div className="flex flex-col min-h-screen">
-        <div className="flex-grow mx-auto p-6 overflow-y-scroll">
+        <div className="flex-grow mx-auto p-6 overflow-y-scroll" style={{ maxWidth: '100%' }}>
           {!article && 
             <div>Loading...</div>
           }
           {article && 
-            <div key={article.id} className="border p-4 rounded-md shadow-xl hover:shadow-md transition-shadow">
+            <div key={article.id} className="border p-4 rounded-md shadow-xl hover:shadow-md transition-shadow overflow-auto" style={{ wordWrap: 'break-word' }}>
               <Link href={`/articles/${article.id}`}>
                 <h2 className="text-2xl font-semibold mb-2 title">
                   {article.title}
@@ -52,29 +50,30 @@ const ArticleDetails = () => {
               <a href={article.link} className="text-blue-600 hover:underline mb-2 block transition-colors">
                 {article.link}
               </a>
-              <p className="transition-colors">
-              <pre><ReactMarkdown>{article.body}</ReactMarkdown></pre>
+              <div className="transition-colors">
+                <pre style={{ whiteSpace: 'pre-wrap' }}>
+                  <ReactMarkdown>{article.body}</ReactMarkdown>
+                </pre>
+              </div>
+              <p className="transition-colors m-4 text-sm">
+                author: <Link href={`/author/${article.author}`}><span className="underline">{article.author}</span> </Link>
               </p>
-              <p className="transition-colors mb-2 title text-sm">
-                Author: <span className="">{article.author}</span>
-              </p>
-              <p><a target="_blank" href={`https://www.whatsonchain.com/tx/${article.txid.split('_')[0]}`}>View on chain</a></p> 
+              <p className='m-2 text-right'><a target="_blank" href={`https://www.whatsonchain.com/tx/${article.txid.split('_')[0]}`}>View on chain</a></p> 
             </div>
-            
-
           }
-          <div className=''>
-            {
-              // {article && 
-              //   <OrbinalEncoder initialTxid={article.txid} />
-              // }
+          <div>
+            {article && 
+              <div className='flex'>
+                <div className='mx-auto'> 
+                  <OrbitalEncoder initialTxid={article.txid.split('_')[0] }/>
+                </div>
+              </div>
             }
           </div>
         </div>
-        <div> 
-      </div>
       </div>
     </>
   );
-}
+};
+
 export default ArticleDetails;

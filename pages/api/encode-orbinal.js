@@ -12,10 +12,15 @@ export default async (req, res) => {
       const canvas = createCanvas(width, height);
       const context = canvas.getContext("2d");
 
-      let endAngle = 0;
+      let endAngle = -2.18;
       let converted = 2.18; // initial value
 
+      // txidArray[10] = txidArray[9].sub_txid(4,6) + txidArray[10]
+
       txidArray.forEach((colour, i) => {
+        if(String(colour).length == 4) {
+          colour = txidArray[i-1].substring(4,6)+txidArray[i]
+        }
         const x = width / 2;
         const y = height / 2;
         const startAngle = endAngle;
@@ -25,7 +30,7 @@ export default async (req, res) => {
           endAngle = Math.round(startAngle - 10);
         }
 
-        const drawWidth = 50;
+        const drawWidth = 40;
         const radius = Math.round((width / 2.5) - (i * 18));
 
         context.fillStyle = "#" + colour;
@@ -34,6 +39,7 @@ export default async (req, res) => {
         context.arc(x, y, radius, startAngle, endAngle, false);
         context.lineWidth = drawWidth;
         context.stroke();
+        
 
         if (isNaN(colour.substring(5))) {
           converted = colour.substring(5).charCodeAt(0) - 96;
@@ -42,7 +48,10 @@ export default async (req, res) => {
         }
       });
 
-      const base64Img = canvas.toDataURL("image/png").replace(/^data:image\/(png|jpg);base64,/, "");
+      const output = createCanvas(200,200);
+      const outputctx = output.getContext("2d");
+      outputctx.drawImage(canvas,0,0,200,200)
+      const base64Img = output.toDataURL("image/png").replace(/^data:image\/(png|jpg);base64,/, "");
 
       res.status(200).json({ txid, txidArray, base64Img });
     } catch (error) {

@@ -24,18 +24,18 @@ const Articles = () => {
             {articles.map((article) => (
                 <div key={article.id} className="border p-4 rounded-md shadow-xl hover:shadow-md transition-shadow">
                 <Link href={`/articles/${article.id}`}>
-                    <h2 className="text-2xl font-semibold mb-2 title">
+                    <h2 className="text-2xl font-semibold mb-2">
                         {article.title}
                     </h2>
                     
                     <a href={article.link} className="text-blue-600 hover:underline mb-2 block">
                         {article.link}
                     </a>
-                    <p className="text-gray-800 overflow-ellipsis overflow-hidden h-20">
+                    <p className="overflow-ellipsis overflow-hidden h-20">
                         {article.body}
                     </p>
-                    <p className="text-gray-600 mb-2 title text-sm">
-                        Author: <span className="">{article.author}</span>
+                    <p className="mb-2 text-sm">
+                        <Link href={`/blog/${article.author}`}><span className="">{article.author}</span> </Link>
                     </p>
                     </Link>
                 </div>

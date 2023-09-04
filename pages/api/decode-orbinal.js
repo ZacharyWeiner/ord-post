@@ -31,7 +31,11 @@ export default async function upload(req, res) {
 
   if (req.method === 'POST') {
     const { file } = req.body;
-    const buffer = Buffer.from(file, 'base64');
+
+    const buffer = Buffer.from(file,'base64');
+
+
+
     try {
      
       const loadedImage = await loadImage(buffer);
@@ -49,19 +53,31 @@ export default async function upload(req, res) {
       for (let i = 0; i < 11; i++) {
         const x = width / 2;
         const y = height / 2;
-        const radius = Math.round((width / 2.5) - (i * 18));
-        const startAngle = endAngle;
+        let radius = Math.round((width / 2.5) - (i * 18));
+        let startAngle = endAngle;
         endAngle = startAngle + Math.round((converted / (i + 1)) * Math.PI);
 
         if (endAngle <= startAngle) {
           endAngle = Math.round(startAngle - 10);
         }
 
-        const midx = Math.round(x + Math.cos(endAngle) * (radius + 10));
-        const midy = Math.round(y + Math.sin(endAngle) * (radius + 10));
+        let midAngle = startAngle+(endAngle-startAngle)/2
+        const midx = Math.round(x + Math.cos(midAngle) * (radius + 10));
+        const midy = Math.round(y + Math.sin(midAngle) * (radius + 10));
 
         const pixel = context.getImageData(midx, midy, 1, 1).data;
-        let hex = ("000000" + rgbToHex(pixel[0], pixel[1], pixel[2])).slice(-6);
+        
+      let hex;  
+        if( i == 10) {        
+
+          var c = ("000000" + rgbToHex(pixel[0], pixel[1], pixel[2])).slice(-6);
+          hex =  c.substring(2,6) 
+      } 
+      else {
+          
+          hex = ("000000" + rgbToHex(pixel[0], pixel[1], pixel[2])).slice(-6);
+
+      }
 
         combined += hex;
 
@@ -70,9 +86,11 @@ export default async function upload(req, res) {
         } else {
           converted = parseInt(hex.substring(5), 10);
         }
+        
       }
 
-      const decodedTxid = combined.slice(9);
+      const decodedTxid = combined;
+      
       res.status(200).json({ message: 'File uploaded and decoded successfully', decodedTxid });
     } catch (error) {
       console.error('Upload or decoding failed:', error);
