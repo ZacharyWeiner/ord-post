@@ -29,3 +29,8 @@ body {
 .title{
   font-family: UnifrakturCook, serif;
 }
+
+.custom-scrollable {
+  overflow-y: auto;
+  max-height: 80vh; /* 80% of the viewport height */
+}
