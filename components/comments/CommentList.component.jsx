@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import ReactMarkdown from 'markdown-to-jsx';
 
 const CommentList = ({ txid }) => {
@@ -63,7 +64,12 @@ const CommentList = ({ txid }) => {
                     <ReactMarkdown>{comment.content}</ReactMarkdown>
                   </pre>
                 </div>
-                <p className="m-4 text-sm">Signed By: {comment.signedBy}</p>
+                <Link href={`/author/${comment.SIGMA[0].address}`}> 
+                    <p className="m-4 text-sm">Signed By: 
+                        {comment.SIGMA[0].address} 
+                    </p>
+                </Link> 
+               
               </div>
             ))
           ) : (

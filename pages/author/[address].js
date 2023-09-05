@@ -33,7 +33,7 @@ const AddressDetails = () => {
 
   return (
     <div className="container mx-auto p-6 overflow-y-scroll max-h-screen">
-      <h1 className="title text-4xl font-bold mb-4">Transactions for {address}</h1>
+      <h1 className="  font-bold mb-4"><span className='title text-4xl'>Posts from </span> {address}</h1>
       <div className="grid grid-cols-1 gap-4">
           {transactions.map((tx, index) => (
               <div key={index} className="border p-4 rounded-md shadow-xl hover:shadow-md transition-shadow">
