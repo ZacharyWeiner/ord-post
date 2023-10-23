@@ -1,25 +1,33 @@
-const admin = require('./../../utils/firebaseAdmin'); // Adjust the path as needed
+const admin = require('./../../utils/firebaseAdmin');
 
 export default async (req, res) => {
-    try {
-      const txid = req.query.txid;
-  
-      if (!txid) {
-        return res.status(400).json({ error: 'txid is required' });
-      }
-  
-      const commentsQuery = admin.firestore().collection('comments').where('context', '==', txid);
-      const commentsSnapshot = await commentsQuery.get();
+  try {
+    const txid = req.query.txid;
+    const lastVisible = req.query.lastVisible; // This will be the ID of the last visible comment
+    const pageSize = 10; // Number of comments per page
 
-  
-      const comments = [];
-      commentsSnapshot.forEach(doc => {
-        comments.push(doc.data());
-      });
-  
-      return res.status(200).json(comments);
-    } catch (error) {
-      return res.status(500).json({ error: 'Failed to fetch comments' });
+    if (!txid) {
+      return res.status(400).json({ error: 'txid is required' });
     }
-  };
-  
+
+    let commentsQuery = admin.firestore().collection('comments').where('context', '==', txid).orderBy('publishedAt').limit(pageSize);
+
+    if (lastVisible) {
+      const lastVisibleDoc = await admin.firestore().collection('comments').doc(lastVisible).get();
+      commentsQuery = commentsQuery.startAfter(lastVisibleDoc);
+    }
+
+    const commentsSnapshot = await commentsQuery.get();
+
+    const comments = [];
+    commentsSnapshot.forEach(doc => {
+      comments.push({ id: doc.id, ...doc.data() }); // Include the ID for pagination purposes
+    });
+    console.log(comments)
+
+    return res.status(200).json(comments);
+  } catch (error) {
+    console.log("There was an error", error);
+    return res.status(500).json({ error: 'Failed to fetch comments' });
+  }
+};
