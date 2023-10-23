@@ -34,3 +34,9 @@ body {
   overflow-y: auto;
   max-height: 80vh; /* 80% of the viewport height */
 }
+
+.video-container video {
+  width: 100%;
+  max-height: 60vh;  /* or set a specific max-height value */
+  object-fit: contain;
+}

@@ -7,10 +7,11 @@ import { useState } from 'react';
 export default function HBD() {
   return (
     <div className="container mx-auto p-6 min-h-screen">
-
-        <img src="https://v3.ordinals.gorillapool.io/content/1449fc1004a46fd97bc250fa59c4dbeaec1dd1728920449ba78a81001637f5c7_0" />
-        <CommentForm txid={'1449fc1004a46fd97bc250fa59c4dbeaec1dd1728920449ba78a81001637f5c7_0'}></CommentForm>
-        <CommentList txid={'1449fc1004a46fd97bc250fa59c4dbeaec1dd1728920449ba78a81001637f5c7_0'}></CommentList>
+        <div className='max-w-4xl video-container'>
+        <video src="https://v3.ordinals.gorillapool.io/content/4c684fd3b394d10f8657cbdda41bbad0828a5218b0f97c58f4575aba158e720c_0" autoplay loop controls></video>
+        </div>
+        <CommentForm txid={'4c684fd3b394d10f8657cbdda41bbad0828a5218b0f97c58f4575aba158e720c_0'}></CommentForm>
+        <CommentList txid={'4c684fd3b394d10f8657cbdda41bbad0828a5218b0f97c58f4575aba158e720c_0'}></CommentList>
     </div>
   );
 }
