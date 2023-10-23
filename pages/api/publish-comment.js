@@ -58,16 +58,7 @@ const handleInscribing = async (fileAsBase64, mimeType, receiverAddress, metadat
               txhex: tx.to_hex()
             })
           })
-
-          // const response = await fetch("https://v3.ordinals.gorillapool.io/api/tx", {
-          //   method: "POST",
-          //   headers: {
-          //     "Content-Type": "application/json"
-          //   },
-          //   body: JSON.stringify({rawtx: Buffer.from(tx.to_hex(), 'hex').toString('base64')})
-          // })
-
-          
+          console.log("Response from WOC:", response)
           // Check if the request was successful
           if (response.ok) {
             // Parse the response as JSON
@@ -76,15 +67,17 @@ const handleInscribing = async (fileAsBase64, mimeType, receiverAddress, metadat
           } else {
             console.log("HTTP-Error: " + response.status);
           };
-          if(response.status === 400 || response.status === 500){console.log('400/500 Error')}
-          else{
+          if(response.status === 400 || response.status === 500){
+            console.log('400/500 Error')
+            return response.status;
+          }
+          else {
             console.log(tx.get_id_hex())
             return tx.get_id_hex();
           }
-          return response.status;
 };
 
-const publishArticle = async (req, res) => {
+const publishComment = async (req, res) => {
     if (req.method !== 'POST') {
       return res.status(405).end();
     }
@@ -101,6 +94,7 @@ const publishArticle = async (req, res) => {
     }
     // Validate the input
     if (content.length > 1000) {
+      console.log("too much content");
       return res.status(400).json({ error: 'Invalid input' });
     }
     const jsonToSubmit = {
@@ -124,12 +118,24 @@ const publishArticle = async (req, res) => {
        jsonToSubmit,
        signerKey)
      // Add the comment to the database
-      console.log({completion})
-      if(completion !== "400" && completion !== "500"){
+      console.log("Handle Inscribing Returns:", completion)
+
+      if(completion === 400){
+        console.log("400 Error")
+        return res.status(400).json({error: "400 From WOC"})
+
+      }
+      if(completion === 500){
+        console.log("500 Error")
+        return res.status(500).json({error: "500 From WOC"})
+
+      }
+      if(completion !== 400 && completion !== 500){
         const commentsRef = await admin.firestore().collection('comments').add({
           author: sendTo,
           content,
           txid: completion,
+          context:txid,
           publishedAt: admin.firestore.Timestamp.now(),
         });
 
@@ -142,4 +148,4 @@ const publishArticle = async (req, res) => {
     }
 };
 
-export default publishArticle;
+export default publishComment;

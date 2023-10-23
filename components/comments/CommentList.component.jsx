@@ -11,35 +11,48 @@ const CommentList = ({ txid }) => {
       const fetchComments = async () => {
         console.log("Fetching Comments")
         try {
-          const res = await fetch('https://v3.ordinals.gorillapool.io/api/inscriptions/search', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                map:{
-                  type: 'comment',
-                  context: 'tx',
-                  tx: txid,
-                }
-            }),
-          });
+          // const res = await fetch('https://v3.ordinals.gorillapool.io/api/inscriptions/search', {
+          //   method: 'POST',
+          //   headers: {
+          //     'Content-Type': 'application/json',
+          //   },
+          //   body: JSON.stringify({
+          //       map:{
+          //         type: 'comment',
+          //         context: 'tx',
+          //         tx: txid,
+          //       }
+          //   }),
+          // });
+
+          // console.log("Comments API reponse:", res)
+          // if (res.ok) {
+          //   let response = await res.json();
+          //   console.log(response);
+          //   const commentMetadata = response;
+
+          //   // Fetch content for each comment
+          //   const commentPromises = commentMetadata.map(async (comment) => {
+          //     const contentRes = await fetch(`https://v3.ordinals.gorillapool.io/content/${comment.txid}_0`);
+          //     const content = await contentRes.text();
+          //     return { ...comment, content };
+          //   });
+
+          //   const fullComments = await Promise.all(commentPromises);
+          //   setComments(fullComments);
+          // } else {
+          //   console.error('Error fetching comment metadata');
+          // }
+          // Fetch comments from your own API
+          const res = await fetch(`/api/comments?txid=${txid}`);
+          console.log("Comments API response:", res);
           
-          console.log("Comments API reponse:", res)
           if (res.ok) {
-            let response = await res.json();
-            console.log(response);
-            const commentMetadata = response;
+            const fetchedComments = await res.json();
+            console.log(fetchedComments);
 
-            // Fetch content for each comment
-            const commentPromises = commentMetadata.map(async (comment) => {
-              const contentRes = await fetch(`https://v3.ordinals.gorillapool.io/content/${comment.txid}_0`);
-              const content = await contentRes.text();
-              return { ...comment, content };
-            });
-
-            const fullComments = await Promise.all(commentPromises);
-            setComments(fullComments);
+            // Directly update the comments state
+            setComments(fetchedComments);
           } else {
             console.error('Error fetching comment metadata');
           }
@@ -68,9 +81,14 @@ const CommentList = ({ txid }) => {
                     <ReactMarkdown>{comment.content}</ReactMarkdown>
                   </pre>
                 </div>
-                {<Link href={`/author/${comment.data.sigma[0].address}`}> 
+                {comment && comment.data && comment.data.sigma[0] && <Link href={`/author/${comment.data.sigma[0].address}`}> 
                     <p className="m-4 text-sm">Signed By: 
                         {comment.data.sigma[0].address} 
+                    </p>
+                </Link> }
+                {comment && comment.author && <Link href={`/author/${comment.author}`}> 
+                    <p className="m-4 text-sm">Signed By: 
+                        {comment.author} 
                     </p>
                 </Link> }
                
