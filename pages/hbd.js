@@ -10,8 +10,10 @@ export default function HBD() {
         <div className='max-w-4xl video-container'>
         <video src="https://v3.ordinals.gorillapool.io/content/4c684fd3b394d10f8657cbdda41bbad0828a5218b0f97c58f4575aba158e720c_0" autoplay loop controls></video>
         </div>
+        <div className='max-w-4xl video-container'>
         <CommentForm txid={'4c684fd3b394d10f8657cbdda41bbad0828a5218b0f97c58f4575aba158e720c_0'}></CommentForm>
         <CommentList txid={'4c684fd3b394d10f8657cbdda41bbad0828a5218b0f97c58f4575aba158e720c_0'}></CommentList>
+        </div>
     </div>
   );
 }
