@@ -32,9 +32,9 @@ const RecentArticlesControl = () => {
 
           {recentArticles.map((article) => (
             <div key={article.id} className="border p-4 m-2 rounded-md shadow-xl hover:shadow-md transition-shadow overflow-auto" style={{ wordWrap: 'break-word' }}>
-               <Link className='text-lg font-bold' href={`/articles/${article.id}`}>
-                  {article.title && <div className='text-sm' >{article.title}</div> }
-                  <div className='text-sm max-w-md' ><ReactMarkdown>{article.body? article.body : ""}</ReactMarkdown></div> 
+               <Link className='text-lg ' href={`/articles/${article.id}`}>
+                  {article.title && <div className='text-sm font-bold' >{article.title}</div> }
+                  <div className='text-sm max-w-md' ><pre><ReactMarkdown>{article.body? article.body : ""}</ReactMarkdown></pre></div> 
                   <div className='text-xs'>By: {article.author}</div> 
                </Link>
             </div>

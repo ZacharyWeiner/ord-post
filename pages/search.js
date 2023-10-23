@@ -9,22 +9,27 @@ export default function Search() {
 
   const handleSearch = async () => {
     const searchTerm = query; // replace with your dynamic search term
-    const res = await fetch("https://ordinals.gorillapool.io/api/inscriptions/search/map?limit=100&offset=0", {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'accept': 'application/json',
-        },
-        body: JSON.stringify({
-            query: {
-                author: searchTerm
-            }
-        })
+    const queryParams = {
+      "sigma": [
+      {
+          "address": searchTerm
+      }
+      ],
+    };
+  const stringified = JSON.stringify(queryParams)
+  const base64 = Buffer.from(stringified).toString("base64");
+  
+
+  const url = `https://v3.ordinals.gorillapool.io/api/inscriptions/search?q=${base64}`;
+  console.log(url)
+  const res = await fetch(url, {
+      method: 'GET'
     });
+
     const data = await res.json();
     console.log(data);
     const resultDetails = await Promise.all(data.map(async (item) => {
-        const response = await fetch(`https://ordinals.gorillapool.io/api/files/inscriptions/${item.outpoint}`);
+        const response = await fetch(`https://v3.ordinals.gorillapool.io/content/${item.outpoint}`);
         let details = await response.json();
         return {
             details,

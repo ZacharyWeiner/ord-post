@@ -43,7 +43,7 @@ export default function CommentForm({ txid }) {
     if (res.status === 200) {
       // Redirect to the article details page
       //window.location.href = `/articles/${data.id}`;
-      alert('comment posted')
+      alert('Your comment has been posted')
     } else {
       // Show an error message
       setError(data.error);

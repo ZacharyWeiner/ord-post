@@ -29,6 +29,7 @@ export default function PublishControl() {
     // Post the data to the /api/publish endpoint
     formData['signerKey'] = objPrivKey;
     formData['receiverAddress'] = objAddress;
+    formData['author'] = objAddress;
     const res = await fetch('/api/publish-new', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

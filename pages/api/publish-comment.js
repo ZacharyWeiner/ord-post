@@ -58,6 +58,16 @@ const handleInscribing = async (fileAsBase64, mimeType, receiverAddress, metadat
               txhex: tx.to_hex()
             })
           })
+
+          // const response = await fetch("https://v3.ordinals.gorillapool.io/api/tx", {
+          //   method: "POST",
+          //   headers: {
+          //     "Content-Type": "application/json"
+          //   },
+          //   body: JSON.stringify({rawtx: Buffer.from(tx.to_hex(), 'hex').toString('base64')})
+          // })
+
+          
           // Check if the request was successful
           if (response.ok) {
             // Parse the response as JSON
@@ -66,7 +76,7 @@ const handleInscribing = async (fileAsBase64, mimeType, receiverAddress, metadat
           } else {
             console.log("HTTP-Error: " + response.status);
           };
-          if(response.status === 400){console.log('400 Error')}
+          if(response.status === 400 || response.status === 500){console.log('400/500 Error')}
           else{
             console.log(tx.get_id_hex())
             return tx.get_id_hex();
@@ -95,9 +105,10 @@ const publishArticle = async (req, res) => {
     }
     const jsonToSubmit = {
         "p": "news",
-        "type": "post",
+        "type": "comment",
         "app": "ordpost.com",
         "context": "tx",
+        "tx": txid
     }
     if(signerKey){jsonToSubmit['tx'] = txid};
     //const base64Json = btoa(JSON.stringify(jsonToSubmit));
@@ -112,17 +123,19 @@ const publishArticle = async (req, res) => {
        sendTo,
        jsonToSubmit,
        signerKey)
-     // Add the article to the database
-     console.log({completion})
+     // Add the comment to the database
+      console.log({completion})
+      if(completion !== "400" && completion !== "500"){
+        const commentsRef = await admin.firestore().collection('comments').add({
+          author: sendTo,
+          content,
+          txid: completion,
+          publishedAt: admin.firestore.Timestamp.now(),
+        });
 
-      const articleRef = await admin.firestore().collection('comments').add({
-        author: sendTo,
-        content,
-        txid: txid,
-        publishedAt: admin.firestore.Timestamp.now(),
-      });
-  
-      return res.status(200).json({ id: articleRef.id });
+        return res.status(200).json({ id: commentsRef.id });
+      }
+      return res.status(completion)
     } catch (error) {
       console.log(error);
       return res.status(500).json({ error: 'An error occurred while publishing the article' });

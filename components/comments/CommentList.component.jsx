@@ -9,27 +9,31 @@ const CommentList = ({ txid }) => {
   useEffect(() => {
     if (txid) {
       const fetchComments = async () => {
+        console.log("Fetching Comments")
         try {
-          const res = await fetch('https://ordinals.gorillapool.io/api/inscriptions/search/map', {
+          const res = await fetch('https://v3.ordinals.gorillapool.io/api/inscriptions/search', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              query: {
-                type: 'post',
-                context: 'tx',
-                tx: txid,
-              },
+                map:{
+                  type: 'comment',
+                  context: 'tx',
+                  tx: txid,
+                }
             }),
           });
-
+          
+          console.log("Comments API reponse:", res)
           if (res.ok) {
-            const commentMetadata = await res.json();
+            let response = await res.json();
+            console.log(response);
+            const commentMetadata = response;
 
             // Fetch content for each comment
             const commentPromises = commentMetadata.map(async (comment) => {
-              const contentRes = await fetch(`https://ordinals.gorillapool.io/api/files/inscriptions/${comment.txid}_0`);
+              const contentRes = await fetch(`https://v3.ordinals.gorillapool.io/content/${comment.txid}_0`);
               const content = await contentRes.text();
               return { ...comment, content };
             });
@@ -64,11 +68,11 @@ const CommentList = ({ txid }) => {
                     <ReactMarkdown>{comment.content}</ReactMarkdown>
                   </pre>
                 </div>
-                <Link href={`/author/${comment.SIGMA[0].address}`}> 
+                {<Link href={`/author/${comment.data.sigma[0].address}`}> 
                     <p className="m-4 text-sm">Signed By: 
-                        {comment.SIGMA[0].address} 
+                        {comment.data.sigma[0].address} 
                     </p>
-                </Link> 
+                </Link> }
                
               </div>
             ))
