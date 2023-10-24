@@ -148,21 +148,6 @@ const CommentList = ({ txid }) => {
                     <ReactMarkdown>{comment.content}</ReactMarkdown>
                   </pre>
                 </div>
-                {comment && comment.data && comment.data.sigma[0] && <Link href={`/author/${comment.data.sigma[0].address}`}> 
-                    <p className="m-4 text-sm">Signed By: 
-                        {comment.data.sigma[0].address} 
-                    </p>
-                </Link> }
-                {comment && comment.author && <Link href={`/author/${comment.author}`}> 
-                    <p className="m-4 text-sm">Signed By: 
-                        {comment.author} 
-                    </p>
-                </Link> }
-                {comment && comment.txid && <Link href={`https://www.whatsonchain.com/tx/${comment.txid}`}> 
-                    <p className="m-4 text-sm">On-Chain: 
-                        {comment.txid} 
-                    </p>
-                </Link> }
                 <button onClick={() => deleteComment(comment.id)}>Delete</button>
               </div>
             ))
