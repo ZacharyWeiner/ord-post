@@ -133,7 +133,7 @@ const CommentList = ({ txid }) => {
           )}
         </>
       )}
-     {comments.length > 99 ? ( <button onClick={loadMoreComments}>Load More</button>) : (<></>)}
+     {comments.length >= 98 ? ( <button onClick={loadMoreComments}>Load More</button>) : (<></>)}
     </div>
   );
 };
