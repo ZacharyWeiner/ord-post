@@ -4,7 +4,7 @@ export default async (req, res) => {
   try {
     const txid = req.query.txid;
     const lastVisible = req.query.lastVisible; // This will be the ID of the last visible comment
-    const pageSize = 10; // Number of comments per page
+    const pageSize = 100; // Number of comments per page
 
     if (!txid) {
       return res.status(400).json({ error: 'txid is required' });
