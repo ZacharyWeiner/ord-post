@@ -74,35 +74,36 @@ const CommentList = ({ txid }) => {
     }
   }, [txid]);
 
-   const fetchComments = async (afterId) => {
+  const fetchComments = async (afterId) => {
     console.log("Fetching Comments");
     try {
       const res = await fetch(`/api/comments?txid=${txid}${afterId ? `&lastVisible=${afterId}` : ''}`);
       console.log("Comments API response:", res);
 
-      if (res.ok) {
-        const fetchedComments = await res.json();
-        console.log(fetchedComments);
-        if (fetchedComments.length > 0) {
-          setLastVisible(fetchedComments[fetchedComments.length - 1].id);
-          setComments(prevComments => {
-              // Filter out fetched comments that already exist in prevComments
-              const newComments = fetchedComments.filter(fetchedComment => 
-                  !prevComments.some(prevComment => prevComment.id === fetchedComment.id)
-              );
-              
-              return [...prevComments, ...newComments];
-          });
-        }
-      } else {
-        console.error('Error fetching comment metadata');
+      const fetchedComments = await res.json();
+
+      // Check if the response contains an error key
+      if (fetchedComments.error) {
+        console.error('Error from the server:', fetchedComments.error);
+        return;  // Don't proceed further
+      }
+
+      if (fetchedComments.length > 0) {
+        setLastVisible(fetchedComments[fetchedComments.length - 1].id);
+        setComments(prevComments => {
+          const newComments = fetchedComments.filter(fetchedComment => 
+            !prevComments.some(prevComment => prevComment.id === fetchedComment.id)
+          );
+          return [...prevComments, ...newComments];
+        });
       }
     } catch (error) {
       console.error('Error fetching comments:', error);
     } finally {
       setIsLoading(false);
     }
-  };
+};
+
 
   const loadMoreComments = () => {
     if (lastVisible) {
@@ -125,22 +126,6 @@ const CommentList = ({ txid }) => {
                     <ReactMarkdown>{comment.content}</ReactMarkdown>
                   </pre>
                 </div>
-                {comment && comment.data && comment.data.sigma[0] && <Link href={`/author/${comment.data.sigma[0].address}`}> 
-                    <p className="m-4 text-sm">Signed By: 
-                        {comment.data.sigma[0].address} 
-                    </p>
-                </Link> }
-                {comment && comment.author && <Link href={`/author/${comment.author}`}> 
-                    <p className="m-4 text-sm">Signed By: 
-                        {comment.author} 
-                    </p>
-                </Link> }
-                {comment && comment.txid && <Link href={`https://www.whatsonchain.com/tx/${comment.txid}`}> 
-                    <p className="m-4 text-sm">On-Chain: 
-                        {comment.txid} 
-                    </p>
-                </Link> }
-               
               </div>
             ))
           ) : (
@@ -154,3 +139,19 @@ const CommentList = ({ txid }) => {
 };
 
 export default CommentList;
+
+{ /* comment && comment.data && comment.data.sigma[0] && <Link href={`/author/${comment.data.sigma[0].address}`}> 
+                    <p className="m-4 text-sm">Signed By: 
+                        {comment.data.sigma[0].address} 
+                    </p>
+                </Link> }
+                {comment && comment.author && <Link href={`/author/${comment.author}`}> 
+                    <p className="m-4 text-sm">Signed By: 
+                        {comment.author} 
+                    </p>
+                </Link> }
+                {comment && comment.txid && <Link href={`https://www.whatsonchain.com/tx/${comment.txid}`}> 
+                    <p className="m-4 text-sm">On-Chain: 
+                        {comment.txid} 
+                    </p>
+</Link> */}
