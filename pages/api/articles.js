@@ -7,10 +7,10 @@ export default async (req, res) => {
 
   // Parse the page and limit from the request
   const { page = '0', limit = '10' } = req.query;
-
+  console.log({page}, {limit})
   // Convert the page and limit to numbers
   const parsedPage = parseInt(page, 10);
-  const parsedLimit = parseInt(limit, 10);
+  let parsedLimit = parseInt(limit, 10);
 
   // Validate the parsed values
   if (isNaN(parsedPage) || isNaN(parsedLimit)) {

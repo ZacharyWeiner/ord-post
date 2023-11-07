@@ -2,20 +2,32 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 
 const Articles = () => {
-  const [articles, setArticles] = useState([]);
-  const [page, setPage] = useState(0);
-
-  useEffect(() => {
-    const fetchArticles = async () => {
-      const res = await fetch(`/api/articles?page=${page}&limit=10`);
-      if (res.ok) {
-        const data = await res.json();
-        setArticles(data);
-      }
-    };
-
-    fetchArticles();
-  }, [page]);
+    const [articles, setArticles] = useState([]);
+    const [page, setPage] = useState(0);
+    const [lastDocId, setLastDocId] = useState(null); // State to keep track of the last document ID
+    
+    useEffect(() => {
+      const fetchArticles = async () => {
+        let url = `/api/articles?page=${page}&limit=10`;
+        // Include the lastDocId in the URL if it's available
+        if (lastDocId) {
+          url += `&lastDoc=${lastDocId}`;
+        }
+        const res = await fetch(url);
+        if (res.ok) {
+          const data = await res.json();
+          setArticles(data);
+          // Update the lastDocId with the ID of the last document in the fetched data, if available
+          if (data.length > 0) {
+            setLastDocId(data[data.length - 1].id);
+          }
+        }
+      };
+    
+      console.log("fetching articles");
+      fetchArticles();
+      console.log("fetching articles complete");
+    }, [page]);
 
   return (
     <div className="container mx-auto p-6 overflow-y-scroll max-h-screen">
@@ -42,7 +54,7 @@ const Articles = () => {
             ))}
         </div>
         <div className="mt-6 flex justify-between">
-            {page > 1 && (
+            {page > 0 && (
                 <button
                     onClick={() => setPage(page - 1)}
                     className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700 transition-colors"
