@@ -1,4 +1,4 @@
-const admin = require('./../../utils/firebaseAdmin');
+const {admin} = require('./../../utils/firebaseAdmin');
 
 export default async (req, res) => {
   try {

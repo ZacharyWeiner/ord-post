@@ -1,5 +1,5 @@
 // pages/api/recentArticles.js
-const admin = require('./../../utils/firebaseAdmin.js'); // Adjust the path as needed
+const {admin} = require('./../../utils/firebaseAdmin.js'); // Adjust the path as needed
 
 export default async (req, res) => {
   if (req.method !== 'GET') {

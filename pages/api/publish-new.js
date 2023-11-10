@@ -1,6 +1,6 @@
 // pages/api/publish.js
 // pages/api/publish.js
-const admin = require('./../../utils/firebaseAdmin.js'); // Adjust the path as needed
+const {admin} = require('./../../utils/firebaseAdmin.js'); // Adjust the path as needed
 import { createOrdinal, sendOrdinal } from './../../ordinals/ordinals'
 // import { createOrdinal, sendOrdinal } from "js-1sat-ord";
 import { PrivateKey, P2PKHAddress } from 'bsv-wasm'
