@@ -31,16 +31,34 @@ const appendStateToFile = async (state) => {
 
 // Example function to add a document to Firestore
 const saveTransaction = async (txid, satoshis, lockDuration, contentTxid, content, posterHandle, lockerHandle) => {
+    
+    console.log("Saving: ", txid, satoshis, lockDuration, contentTxid, content, posterHandle, lockerHandle)
+    if (lockerHandle === undefined) {
+        lockerHandle = posterHandle
+    }
     // Query to check if a duplicate record exists
-    const querySnapshot = await db.collection('locks')
-      .where('txid', '==', txid)
-      .where('satoshis', '==', satoshis)
-      .where('lockDuration', '==', lockDuration)
-      .where('contentTxid', '==', contentTxid)
-      .where('content', '==', content)
-      .where('posterHandle', '==', posterHandle)
-      .where('lockerHandle', '==', lockerHandle)
-      .get();
+    let querySnapshot; 
+    if(content.length < 10000){
+        querySnapshot = await db.collection('locks')
+        .where('txid', '==', txid)
+        .where('satoshis', '==', satoshis)
+        .where('lockDuration', '==', lockDuration)
+        .where('contentTxid', '==', contentTxid)
+        .where('content', '==', content)
+        .where('posterHandle', '==', posterHandle)
+        .where('lockerHandle', '==', lockerHandle)
+        .get();
+    } else {
+        querySnapshot = await db.collection('locks')
+        .where('txid', '==', txid)
+        .where('satoshis', '==', satoshis)
+        .where('lockDuration', '==', lockDuration)
+        .where('contentTxid', '==', contentTxid)
+        .where('posterHandle', '==', posterHandle)
+        .where('lockerHandle', '==', lockerHandle)
+        .get();
+    }
+    
   
     // If the querySnapshot is empty, there are no duplicates
     if (querySnapshot.empty) {
@@ -81,7 +99,7 @@ export default async function handler(req, res) {
   try {
     const response = await axios.get('https://api.whatsonchain.com/v1/bsv/main/chain/info');
     const data = response.data;
-    currentBlockNumber = data.blocks -10; // Use the correct property that contains the latest block number
+    currentBlockNumber = data.blocks -25; // Use the correct property that contains the latest block number
   } catch (error) {
     console.error('Error fetching current block number:', error);
     res.write(`event: error\ndata: Error fetching current block number: ${error.message}\n\n`);
@@ -189,14 +207,15 @@ const onPublish = async function(tx) {
             const mapDataResponse = await axiosInstance.get(`https://locks.gorillapool.io/api/txos/${contentTx}_1`);
             // NOTE: At this point we have the content to which the lock has been applied.
             //.      Details about the lock its self
-            console.log( "mint command ",  "got a lock of ",  locksResponseData[0].satoshis, "satoshis - ", "comand-author:", mapDataResponse.data.data.map.paymail, "content:", content);
+            //console.log( "mint command ",  "got a lock of ",  locksResponseData[0].satoshis, "satoshis - ", "comand-author:", mapDataResponse.data.data.map.paymail, "content:", content);
             const state = {
               lockTxid: tx.id,
               satoshisLocked: locksResponseData[0].satoshis,
               contentTxid: contentTx,
               postContent: content,
               locks: locksResponseData,
-              commandAuthor: mapDataResponse.data.data.map.paymail
+              author: mapDataResponse.data.data.map.paymail,
+              locker: lockerHandle
             };
             console.log(`event: transaction\ndata: ${JSON.stringify(state)}\n\n`);
             res.write(`event: transaction\ndata: ${JSON.stringify(state)}\n\n`);

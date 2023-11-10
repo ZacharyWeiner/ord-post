@@ -62,14 +62,14 @@ export default function Home() {
       <div>
         {transactions.length > 0 && transactions.map(tx => (
             <div key={tx.id} className="border p-4 m-2 rounded-md shadow-xl hover:shadow-md transition-shadow overflow-auto" style={{ wordWrap: 'break-word' }}>
-                <div className=''>{tx.commandAuthor} locked {tx.satoshisLocked} satoshis to</div>    
-                <div className=''><ContentComponent content={autoLink(tx['postContent'])}></ContentComponent></div>
+                <div><span className='text-yellow-600'>{tx.author}</span> got a lock from <span className='text-blue-600'>{tx.locker}</span>  </div>    
+                <div className=''><ContentComponent content={tx['postContent']}></ContentComponent></div>
             </div>
         ))}
         {transactions.length === 0 && locks.map(tx => (
             <div key={tx.id} className="border p-4 m-2 rounded-md shadow-xl hover:shadow-md transition-shadow overflow-auto" style={{ wordWrap: 'break-word' }}>
-            <div className=''><ContentComponent content={autoLink(tx['content'])}></ContentComponent></div>
-                    <div className=''> {tx['posterHandle']} got a lock from locked by: {tx['lockerHandle']} </div>
+            <div className=''><ContentComponent content={tx['content']}></ContentComponent></div>
+                    <div>  <span className='text-yellow-600'>{tx['posterHandle']}</span> got a lock from: <span className='text-blue-600'>{tx['lockerHandle']}</span> </div>
                 </div>
             ))   
         }
