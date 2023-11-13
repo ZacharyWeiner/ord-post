@@ -1,12 +1,13 @@
 // pages/index.js
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import LocksChart from '../../components/locks/LocksChart.component'
 import ContentComponent from "./../../components/content/ContentComponent"
 
 export default function Home() {
   const [transactions, setTransactions] = useState([]);
   const [locks, setLocks] = useState([]);
-
+  const currentBlockHeight = 123456;
   const axiosInstance = axios.create({
     // You can set base URLs, headers, timeout limits, etc.
   });
@@ -58,7 +59,12 @@ export default function Home() {
 
   return (
     <div>
+    <div>
+            <h1>Locks Chart</h1>
+            <LocksChart currentBlockHeight={818149} />
+        </div>
     <h1 className='text-lg mt-8'>Recent Locks</h1>
+    <div className='max-w-4xl m-auto'>
       <div>
         {transactions.length > 0 && transactions.map(tx => (
             <div key={tx.id} className="border p-4 m-2 rounded-md shadow-xl hover:shadow-md transition-shadow overflow-auto" style={{ wordWrap: 'break-word' }}>
@@ -74,6 +80,7 @@ export default function Home() {
             ))   
         }
       </div>
+    </div>
     </div>
   );
 }

@@ -21,7 +21,7 @@ const ContentComponent = ({ content }) => {
     // Replace Base64 images with img tags
     const base64ImageRegex = /(\bdata:image\/[a-zA-Z]+;base64,[^\s"]+)/ig;
     replacedText = replacedText.replace(base64ImageRegex, (imageData) => {
-      return `<img src="${imageData}" class="max-w-xl" alt="Embedded Image" />`;
+      return `<img src="${imageData}" class="max-w-xl m-auto" alt="Embedded Image" />`;
     });
 
     return replacedText;
