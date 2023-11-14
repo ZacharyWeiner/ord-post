@@ -3,7 +3,7 @@ import axios from 'axios';
 import fs from 'fs';
 import path from 'path';
 import { db, admin } from './../../utils/firebaseAdmin'; // Adjust the import path as necessary
-
+import chalk from "chalk";
 const filePath = path.join(process.cwd(), 'state.txt');
 
 // Create an instance of axios with default configuration
@@ -30,54 +30,54 @@ const appendStateToFile = async (state) => {
 };
 
 // Example function to add a document to Firestore
-const saveTransaction = async (txid, satoshis, lockDuration, contentTxid, content, posterHandle, lockerHandle) => {
-    
-    console.log("Saving: ", txid, satoshis, lockDuration, contentTxid, content, posterHandle, lockerHandle)
-    if (lockerHandle === undefined) {
-        lockerHandle = posterHandle
-    }
-    // Query to check if a duplicate record exists
-    let querySnapshot; 
-    if(content.length < 10000){
-        querySnapshot = await db.collection('locks')
-        .where('txid', '==', txid)
-        .where('satoshis', '==', satoshis)
-        .where('lockDuration', '==', lockDuration)
-        .where('contentTxid', '==', contentTxid)
-        .where('content', '==', content)
-        .where('posterHandle', '==', posterHandle)
-        .where('lockerHandle', '==', lockerHandle)
-        .get();
-    } else {
-        querySnapshot = await db.collection('locks')
-        .where('txid', '==', txid)
-        .where('satoshis', '==', satoshis)
-        .where('lockDuration', '==', lockDuration)
-        .where('contentTxid', '==', contentTxid)
-        .where('posterHandle', '==', posterHandle)
-        .where('lockerHandle', '==', lockerHandle)
-        .get();
-    }
-    
-  
-    // If the querySnapshot is empty, there are no duplicates
-    if (querySnapshot.empty) {
-      // No existing record, so create a new one
-      await db.collection('locks').add({
-        txid,
-        satoshis,
-        lockDuration,
+const saveTransaction = async (txid, satoshis, lockedInBlock, lockDuration, contentTxid, content, author) => {
+  let shouldSave = false;
+  console.log(chalk.bgCyan("Beginning Save", txid, satoshis, lockedInBlock, lockDuration, contentTxid, content, author))
+  try {
+    // References to the collections
+    const contentCollectionRef = db.collection('contentCollection');
+    const likesCollectionRef = db.collection('likesCollection').doc(txid);
+
+    // Check if content exists
+    const contentDoc = await contentCollectionRef.doc(contentTxid).get();
+    if (!contentDoc.exists) {
+      // Save the content if it doesn't exist
+      await contentCollectionRef.doc(contentTxid).set({
         contentTxid,
         content,
-        posterHandle,
-        lockerHandle,
-        timestamp: admin.firestore.FieldValue.serverTimestamp() // Automatically generate a timestamp
+        author: author ? author : "",
+        timestamp: admin.firestore.FieldValue.serverTimestamp()
       });
-      console.log('Transaction saved successfully.');
+      console.log(chalk.bgGreen('Content saved:', contentTxid));
     } else {
-      console.log('Duplicate record detected. Skipping save.');
+      console.log(chalk.bgYellow('Content already exists:', contentTxid));
     }
-  };
+
+    // Check if the like already exists
+    const likeDoc = await likesCollectionRef.get();
+    if (!likeDoc.exists) {
+      shouldSave = true;
+      // Save the like if it doesn't exist
+      await likesCollectionRef.set({
+        txid,
+        contentTxid,
+        satoshis,
+        lockedInBlock,
+        lockDuration,
+        contentAuthor: author ? author : "",
+        contentRef: contentCollectionRef.doc(contentTxid),  // Reference to the content
+        timestamp: admin.firestore.FieldValue.serverTimestamp()
+      });
+
+      console.log(chalk.bgGreen('Like saved:', txid));
+    } else {
+      console.log(chalk.bgYellow('Like already exists:', txid));
+    }
+  } catch (err) {
+    console.log(chalk.bgRed("There was an error", err.message));
+  }
+  return shouldSave;
+};
 
 // Example function to update a document in Firestore
 // const updateTotalCoinsLocked = async (txid, additionalSatoshis) => {
@@ -99,7 +99,7 @@ export default async function handler(req, res) {
   try {
     const response = await axios.get('https://api.whatsonchain.com/v1/bsv/main/chain/info');
     const data = response.data;
-    currentBlockNumber = data.blocks -25; // Use the correct property that contains the latest block number
+    currentBlockNumber = data.blocks -144; // Use the correct property that contains the latest block number
   } catch (error) {
     console.error('Error fetching current block number:', error);
     res.write(`event: error\ndata: Error fetching current block number: ${error.message}\n\n`);
@@ -148,12 +148,30 @@ const onError = function(err) {
 const onMempool = function(tx) {
     console.log("MEMPOOL TRANSACTION", tx);
 };
-
 const onPublish = async function(tx) {
+  console.log(chalk.green("Pushing new tx into the stack"))
+  // transactionsToInspect.push(tx)
+  try{
+      let {lockedForBlocks, satoshisLocked} = await processTransaction(tx)
+      console.log(chalk.cyan(`Updating Stats - Total Blocks Locked: ${lockedForBlocks} Total Satoshis: ${satoshisLocked}`))
+      if(updateStats && (satoshisLocked || lockedForBlocks)){
+          try{
+              let bitcoinLocked = satoshisLocked / 100000000;
+              await updateLockStatistics(bitcoinLocked, lockedForBlocks) 
+              console.log(chalk.cyan(`Updated Stats`))
+          }catch(err){"There was an error updating the stats: ", err.message}
+      }
+  }catch(err){console.log("Error in main: ", err.message)}
+  
+};
+const processTransaction = async function(tx) {
     let lockID = tx.id;
     let lockedTo; 
     let lockerHandle; 
     let lockedToHandle; 
+    let updateStats;
+    let lockedForBlocks;
+    let satoshisLocked;
 
     // 1: We get a streaming feed of lock transactions. 
     // Generally the lock is in the _0 outout and the context (MAP DATA) is in the _1 output 
@@ -186,7 +204,13 @@ const onPublish = async function(tx) {
      // 3: Check if the lock is significant.
     //   If not - do nothing
     //   If it is then lets take a look at what they were locking to. 
-    if (locksResponseData && locksResponseData.length > 1) {
+    satoshisLocked = locksResponseData[0].satoshis
+    if (locksResponseData && locksResponseData.length > 1 && satoshisLocked) {
+      let lockedInBlock = locksResponseData[0].height;
+      let lockedUntil = locksResponseData[0].data?.lock?.until;
+      lockedForBlocks = lockedUntil - lockedInBlock;
+      console.log(chalk.blue(`Locked in Block ${lockedInBlock} Until: ${lockedUntil} For ${lockedForBlocks} Blocks`))
+  
       // 4: Retrieve the output with the data/context 
       const hasContext = locksResponseData[1];
       // 5: Check to make sure that there is map data in this output, and that it refrences another transaction
@@ -219,7 +243,7 @@ const onPublish = async function(tx) {
             };
             console.log(`event: transaction\ndata: ${JSON.stringify(state)}\n\n`);
             res.write(`event: transaction\ndata: ${JSON.stringify(state)}\n\n`);
-            await saveTransaction(tx.id, locksResponseData[0].satoshis, 0, contentTx, content, mapDataResponse.data.data.map.paymail, lockerHandle)
+            updateStats = await saveTransaction(tx.id, locksResponseData[0].satoshis, lockedInBlock, lockedForBlocks,  contentTx, content, mapDataResponse.data.data.map.paymail)
             //await appendStateToFile(state);
           //}
         // } else {
@@ -230,6 +254,7 @@ const onPublish = async function(tx) {
   } catch (error) {
     console.error("Error handling published transaction:", error.message);
   }
+  return {updateStats, lockedForBlocks, satoshisLocked};
 };
 
   // Subscribe to the JungleBus

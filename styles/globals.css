@@ -18,12 +18,12 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
+  /* background: linear-gradient(
       to bottom,
       transparent,
       rgb(var(--background-end-rgb))
     )
-    rgb(var(--background-start-rgb));
+    rgb(var(--background-start-rgb)); */
 }
 
 .title{
@@ -39,4 +39,9 @@ body {
   width: 100%;
   max-height: 60vh;  /* or set a specific max-height value */
   object-fit: contain;
+}
+
+/* In your CSS file */
+.chart-container {
+  width: 100%;
 }

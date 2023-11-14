@@ -21,12 +21,15 @@ export default function Home() {
     try {
       console.log("trying")
       const response = await axios.get('/api/recent-locks');
-      console.log(response.data);
+      console.log("Recent Locks: ", response.data);
       setLocks(response.data);
     } catch (error) {
       console.error('Error fetching recent locks:', error);
     }
   };
+  // useEffect(() => {
+  //   fetchRecentLocks();
+  // }, [])
   useEffect(() => {
 
     // Subscribe to the SSE endpoint
@@ -59,24 +62,31 @@ export default function Home() {
 
   return (
     <div>
-    <div>
-            <h1>Locks Chart</h1>
-            <LocksChart currentBlockHeight={818149} />
-        </div>
+    <div className='w-full min-h-48'>
+        <h1>Locks Chart</h1>
+        <LocksChart currentBlockHeight={818149} />
+    </div>
     <h1 className='text-lg mt-8'>Recent Locks</h1>
     <div className='max-w-4xl m-auto'>
       <div>
         {transactions.length > 0 && transactions.map(tx => (
             <div key={tx.id} className="border p-4 m-2 rounded-md shadow-xl hover:shadow-md transition-shadow overflow-auto" style={{ wordWrap: 'break-word' }}>
                 <div><span className='text-yellow-600'>{tx.author}</span> got a lock from <span className='text-blue-600'>{tx.locker}</span>  </div>    
-                <div className=''><ContentComponent content={tx['postContent']}></ContentComponent></div>
+                <div className=''><ContentComponent content={tx['contentData']}></ContentComponent></div>
             </div>
         ))}
         {transactions.length === 0 && locks.map(tx => (
-            <div key={tx.id} className="border p-4 m-2 rounded-md shadow-xl hover:shadow-md transition-shadow overflow-auto" style={{ wordWrap: 'break-word' }}>
-            <div className=''><ContentComponent content={tx['content']}></ContentComponent></div>
-                    <div>  <span className='text-yellow-600'>{tx['posterHandle']}</span> got a lock from: <span className='text-blue-600'>{tx['lockerHandle']}</span> </div>
-                </div>
+            <div key={tx.id} className="border p-4 m-2 rounded-md shadow-xl hover:shadow-md transition-shadow overflow-auto" style={{ maxWidth: '100%', overflowWrap: 'break-word' }}>
+              <div className='text-lg break-words'>
+                  <pre style={{ whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}>
+                      <ContentComponent content={tx['contentData']['content']} />
+                  </pre>
+              </div>
+              <div>
+                  <span className='text-yellow-600'>{tx['contentData']['author']}</span> got a lock of {tx['likeData']['satoshis'] / 100000000} bitcoin for {tx['likeData']['lockDuration']} blocks
+              </div>
+          </div>
+      
             ))   
         }
       </div>

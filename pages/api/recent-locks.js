@@ -1,18 +1,45 @@
-// pages/api/recent-locks.js
-import { db } from './../../utils/firebaseAdmin'; // Adjust the import path as necessary
-
+import {admin, db} from '../../utils/firebaseAdmin';
 export default async function handler(req, res) {
   try {
-    const snapshot = await db.collection('locks')
-      .orderBy('timestamp', 'desc') // Replace 'timestamp' with your actual field name for the timestamp
-      .limit(10) // Adjust the number to however many recent entries you want
-      .get();
+    const uniqueContentRefs = new Set();
+    const hydratedLikes = [];
+    const batchSize = 100;
+    let lastDoc = null;
 
-    const recentLocks = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    while (hydratedLikes.length < 25) {
+      let query = db.collection('likesCollection')
+                    .orderBy('lockedInBlock', 'desc')
+                    .limit(batchSize);
 
-    res.status(200).json(recentLocks);
+      if (lastDoc) {
+        query = query.startAfter(lastDoc);
+      }
+
+      const snapshot = await query.get();
+      if (snapshot.empty) break;
+
+      for (const doc of snapshot.docs) {
+        const like = doc.data();
+
+        // Check if contentRef is a DocumentReference and not already processed
+        if (like.contentRef instanceof admin.firestore.DocumentReference && !uniqueContentRefs.has(like.contentRef.path)) {
+          const contentDoc = await like.contentRef.get();
+          if (contentDoc.exists) {
+            hydratedLikes.push({ likeId: doc.id, likeData: like, contentData: contentDoc.data() });
+            uniqueContentRefs.add(like.contentRef.path);
+
+            if (hydratedLikes.length === 25) break;
+          }
+        }
+      }
+
+      lastDoc = snapshot.docs[snapshot.docs.length - 1];
+    }
+    console.log(hydratedLikes);
+    res.status(200).json(hydratedLikes);
   } catch (error) {
-    console.error('Error getting recent locks:', error);
+    console.error('Error getting unique likes:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 }
+

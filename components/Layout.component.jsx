@@ -4,7 +4,7 @@ import Menu from '@/components/tailwind/Menu.component'
 export default function Layout({ children }) {
   return (
     <>
-        <main className={`lg:flex lg:flex-col items-center justify-between max-h-screen `} >
+        <main className={`lg:flex lg:flex-col items-center justify-between min-h-screen max-h-screen `} >
             <Menu />
             <div className='pt-12'> {children}</div>
         </main>

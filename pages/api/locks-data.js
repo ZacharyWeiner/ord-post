@@ -2,11 +2,10 @@ import {admin, db} from '../../utils/firebaseAdmin';
 
 export default async function handler(req, res) {
   try {
-    console.log("Hit API")
     const targetBlockHeight = req.query.blockHeight - 144;
     const locksPerBlock = {};
 
-    const querySnapshot = await db.collection('contentLocks')
+    const querySnapshot = await db.collection('likesCollection')
                                   .where('lockedInBlock', ">", targetBlockHeight)
                                   .get();
 

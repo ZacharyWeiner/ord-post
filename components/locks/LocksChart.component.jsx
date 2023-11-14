@@ -24,6 +24,8 @@ const LocksChart = ({ currentBlockHeight }) => {
                             }]
                         },
                         options: {
+                            responsive: true,
+                            maintainAspectRatio: false, // This will allow the chart to fill the container
                             scales: {
                                 y: {
                                     beginAtZero: true
@@ -37,8 +39,8 @@ const LocksChart = ({ currentBlockHeight }) => {
     }, [currentBlockHeight]);
 
     return (
-        <div>
-            <canvas ref={chartRef}></canvas>
+        <div style={{ width: '100%' }}>
+            <canvas style={{ width: '100%' }} ref={chartRef}></canvas>
         </div>
     );
 };
