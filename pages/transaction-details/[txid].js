@@ -16,7 +16,7 @@ const TransactionDetails = () => {
 
   useEffect(() => {
     if (txid) {
-      fetch(`https://ordinals.gorillapool.io/api/files/inscriptions/${txid}`)
+      fetch(`https://v3.ordinals.gorillapool.io/content/${txid}`)
         .then((res) => res.text())  // Get the response as text
         .then((base64Data) => {
           console.log("Base64 Data:", base64Data);  // Debugging line
@@ -28,14 +28,15 @@ const TransactionDetails = () => {
 
   useEffect(() => {
     if (txid) {
-      fetch(`https://ordinals.gorillapool.io/api/inscriptions/txid/${txid}`)
+      fetch(`https://v3.ordinals.gorillapool.io/api/inscriptions/txid/${txid}`)
         .then((res) => res.json())
         .then((data) => {
-          if(data[0].SIGMA[0]){
-            setSignBy(data[0].SIGMA[0].address);
+          if(data[0].sigma[0]){
+            setSignBy(data[0]?.sigma[0]?.address);
           }
-          if(data && data[0] && data[0].MAP){
-            setDetails(data[0].MAP);
+          console.log("data[0].data.M", data[0].data)
+          if(data && data[0] && data[0].data?.map){
+            setDetails(data[0].data.MAP);
           }
         })
         .catch((error) => console.error('Error fetching transaction details:', error));

@@ -36,7 +36,7 @@ export default function Home() {
             <PublishSmall />
           </div> 
           </article>
-          <aside className="w-full custom-scrollable bg-gray-200 rounded-xl">
+          <aside className="w-full custom-scrollable  rounded-xl">
             <RecentArticlesControl />
           </aside>
           

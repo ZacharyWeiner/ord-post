@@ -51,12 +51,12 @@ export default function PublishSmall() {
   return (
     <div className="">
     
-      <form onSubmit={handleSubmit} className="space-y-6 bg-gray-300 p-4 rounded-xl shadow-md w-full mx-auto">
-       <div className='md:space-x-4 text-gray-700'> 
+      <form onSubmit={handleSubmit} className="space-y-6 p-4 rounded-xl shadow-md w-full mx-auto">
+       <div className='md:space-x-4'> 
          
             <div className="flex flex-col flex-grow">
-                <label htmlFor="body" className="text-sm font-semibold text-gray-700 flex-grow">Post (markdown):</label>
-                <textarea rows={5} name="body" maxLength="1000" required onChange={handleChange} className="h-full p-2 border border-gray-300 rounded-md h-32 focus:border-black focus:ring-0"></textarea>
+                <label htmlFor="body" className="text-sm font-semibold  flex-grow">Post (markdown):</label>
+                <textarea rows={5} name="body" maxLength="1000" required onChange={handleChange} className="h-full p-2 border border-gray-300 rounded-md h-32 text-black focus:border-black focus:ring-0"></textarea>
             </div>
             </div>
         

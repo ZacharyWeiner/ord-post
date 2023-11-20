@@ -12,7 +12,7 @@ const TransactionSearchComponent = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    router.push(`/author/${txid}`);
+    router.push(`/search?query=${txid}`);
   };
 
   return (
