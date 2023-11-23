@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import ReactMarkdown from 'markdown-to-jsx';
 import { useRouter } from 'next/router';
-import SearchComponent from '@/components/search/default';
+import SearchBlockmapComponent from '@/components/search/blockmap';
 
 export default function Search() {
   const [query, setQuery] = useState('');
@@ -69,8 +69,8 @@ export default function Search() {
 
   return (
     <div className="container mx-auto p-6 min-h-screen">
-      <h1 className="text-4xl font-bold mb-4">Search Posts</h1>
-      <SearchComponent />
+      <h1 className="text-4xl font-bold mb-4">Search Blockmaps, BSVMaps, or Bitmaps</h1>
+      <SearchBlockmapComponent />
     </div>
   );
 }
