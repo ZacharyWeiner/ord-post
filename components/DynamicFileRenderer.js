@@ -71,18 +71,8 @@ const DynamicFileRenderer = ({ url, txid }) => {
         <Link target="_blank" href={`https://www.1satordinals.com/tx/${txid}`}> tx</Link>
         </>
       );
-    } else if (mimeType === 'model/gltf-binary') {
-      return (
-        <Canvas style={{ width: '100%', height: '400px' }}>
-          <ambientLight intensity={0.5} />
-          <directionalLight position={[0, 10, 5]} intensity={1} />
-          <Suspense fallback={null}>
-            <Model url={src} />
-          </Suspense>
-          <OrbitControls />
-        </Canvas>
-      );
-    } else {
+    } 
+     else {
       return (
         <div>
           <p>Unsupported MIME type: {mimeType}</p>
