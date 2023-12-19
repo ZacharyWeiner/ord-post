@@ -154,7 +154,7 @@ const onPublish = async function(tx) {
   try{
       let {lockedForBlocks, satoshisLocked} = await processTransaction(tx)
       console.log(chalk.cyan(`Updating Stats - Total Blocks Locked: ${lockedForBlocks} Total Satoshis: ${satoshisLocked}`))
-      if(updateStats && (satoshisLocked || lockedForBlocks)){
+      if((satoshisLocked || lockedForBlocks)){
           try{
               let bitcoinLocked = satoshisLocked / 100000000;
               await updateLockStatistics(bitcoinLocked, lockedForBlocks) 
@@ -182,7 +182,7 @@ const processTransaction = async function(tx) {
     if (responseCache.has(tx.id)) {
       locksResponseData = responseCache.get(tx.id);
     } else {
-      const locksResponse = await axiosInstance.get(`https://locks.gorillapool.io/api/locks/txid/${tx.id}`);
+      const locksResponse = await axiosInstance.get(`https://ordinals.gorillapool.io/api/locks/txid/${tx.id}`);
       locksResponseData = locksResponse.data;
       responseCache.set(tx.id, locksResponseData); // Cache the response
     }
